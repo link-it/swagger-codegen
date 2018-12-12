@@ -16,20 +16,20 @@
         <developerConnection>scm:git:git@github.com:swagger-api/swagger-codegen.git</developerConnection>
         <url>https://github.com/swagger-api/swagger-codegen</url>
     </scm>
-    <distributionManagement>
-    <repository>
-      <id>link-repository</id>
-      <name>Linkit Public Repository</name>
-      <url>scp://maven.openspcoop.org/var/maven2/repositories/public/</url>
-    </repository>
-    <snapshotRepository>
-      <id>link-repository</id>
-      <name>Linkit Snapshots Repository</name>
-      <url>scp://maven.openspcoop.org/var/maven2/repositories/snapshots/</url>
-    </snapshotRepository>
-  </distributionManagement>
+	<distributionManagement>
+		<repository>
+			<id>link-repository</id>
+			<name>Linkit Public Repository</name>
+			<url>scpexe://maven.openspcoop.org/var/maven2/repositories/public/</url>
+		</repository>
+		<snapshotRepository>
+			<id>link-repository</id>
+			<name>Linkit Snapshots Repository</name>
+			<url>scpexe://maven.openspcoop.org/var/maven2/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
 
-<developers>
+    <developers>
         <developer>
             <id>fehguy</id>
             <name>Tony Tam</name>
@@ -267,24 +267,6 @@
                     </execution>
                 </executions>
             </plugin>
-<plugin>
-    <groupId>org.sonatype.plugins</groupId>
-    <artifactId>nexus-staging-maven-plugin</artifactId>
-    <version>1.6.2</version>
-    <extensions>true</extensions>
-    <configuration>
-      <serverId>ossrh</serverId>
-      <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-      <autoReleaseAfterClose>true</autoReleaseAfterClose>
-    </configuration>
-    <dependencies>
-      <dependency>
-        <groupId>org.apache.maven.wagon</groupId>
-        <artifactId>wagon-ssh</artifactId>
-        <version>2.12</version>
-      </dependency>
-    </dependencies>
-  </plugin>
         </plugins>
         <pluginManagement>
             <plugins>
@@ -1065,7 +1047,7 @@
         <surefire-version>2.22.0</surefire-version>
         <jmockit-version>1.25</jmockit-version>
         <reflections-version>0.9.10</reflections-version>
-        <swagger-codegen-generators-version>1.0.0-Linkit-SNAPSHOT</swagger-codegen-generators-version>
+        <swagger-codegen-generators-version>1.0.0-gov4j-1</swagger-codegen-generators-version>
         <jmockit-version>1.42</jmockit-version>
     </properties>
 </project>

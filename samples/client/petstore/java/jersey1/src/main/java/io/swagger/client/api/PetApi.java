@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 public class PetApi {
   private ApiClient apiClient;
 
@@ -148,7 +147,7 @@ public class PetApi {
     Map<String, String> localVarHeaderParams = new HashMap<String, String>();
     Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    localVarQueryParams.addAll(apiClient.parameterToPair("status", status));
+    localVarCollectionQueryParams.addAll(apiClient.parameterToPairs("multi", "status", status));
 
     
     
@@ -191,7 +190,7 @@ public class PetApi {
     Map<String, String> localVarHeaderParams = new HashMap<String, String>();
     Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    localVarQueryParams.addAll(apiClient.parameterToPair("tags", tags));
+    localVarCollectionQueryParams.addAll(apiClient.parameterToPairs("multi", "tags", tags));
 
     
     

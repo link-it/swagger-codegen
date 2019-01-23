@@ -7,7 +7,6 @@ import io.swagger.v3.oas.models.media.Discriminator;
 import io.swagger.v3.oas.models.tags.Tag;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -17,11 +16,11 @@ import java.util.Arrays;
 public class CodegenOperation extends CodegenObject {
     public final List<CodegenProperty> responseHeaders = new ArrayList<CodegenProperty>();
     public boolean returnTypeIsPrimitive, returnSimpleType, subresourceOperation;
-    public String path, operationId, returnType, httpMethod, returnBaseType,
-            returnContainer, summary, unescapedNotes, notes, baseName, defaultResponse;
+    public String path, operationId, returnType, httpMethod, returnBaseType, returnContainer, summary, unescapedNotes, notes, baseName, defaultResponse, testPath;
     public Discriminator discriminator;
     public List<Map<String, String>> consumes, produces, prioritizedContentTypes;
     public CodegenParameter bodyParam;
+    public List<CodegenContent> contents = new ArrayList<>();
     public List<CodegenParameter> allParams = new ArrayList<CodegenParameter>();
     public List<CodegenParameter> bodyParams = new ArrayList<CodegenParameter>();
     public List<CodegenParameter> pathParams = new ArrayList<CodegenParameter>();
@@ -231,6 +230,8 @@ public class CodegenOperation extends CodegenObject {
             return false;
         if (bodyParam != null ? !bodyParam.equals(that.bodyParam) : that.bodyParam != null)
             return false;
+        if (contents != null ? !contents.equals(that.contents) : that.contents != null)
+            return false;
         if (allParams != null ? !allParams.equals(that.allParams) : that.allParams != null)
             return false;
         if (bodyParams != null ? !bodyParams.equals(that.bodyParams) : that.bodyParams != null)
@@ -285,6 +286,7 @@ public class CodegenOperation extends CodegenObject {
         result = 31 * result + (consumes != null ? consumes.hashCode() : 0);
         result = 31 * result + (produces != null ? produces.hashCode() : 0);
         result = 31 * result + (bodyParam != null ? bodyParam.hashCode() : 0);
+        result = 31 * result + (contents != null ? contents.hashCode() : 0);
         result = 31 * result + (allParams != null ? allParams.hashCode() : 0);
         result = 31 * result + (bodyParams != null ? bodyParams.hashCode() : 0);
         result = 31 * result + (pathParams != null ? pathParams.hashCode() : 0);
@@ -353,6 +355,10 @@ public class CodegenOperation extends CodegenObject {
         return defaultResponse;
     }
 
+    public String getTestPath() {
+        return testPath;
+    }
+
     public Discriminator getDiscriminator() {
         return discriminator;
     }
@@ -371,6 +377,10 @@ public class CodegenOperation extends CodegenObject {
 
     public CodegenParameter getBodyParam() {
         return bodyParam;
+    }
+
+    public List<CodegenContent> getContents() {
+        return contents;
     }
 
     public List<CodegenParameter> getAllParams() {
@@ -474,7 +484,7 @@ public class CodegenOperation extends CodegenObject {
     }
 
     public Boolean getIsRestfulDestroy() {
-        return getBooleanValue(CodegenConstants.IS_RESTFUL_UPDATE_EXT_NAME);
+        return getBooleanValue(CodegenConstants.IS_RESTFUL_DESTROY_EXT_NAME);
     }
 
     public Boolean getIsRestful() {

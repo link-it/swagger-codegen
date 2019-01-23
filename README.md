@@ -1,7 +1,7 @@
-# Swagger Code Generator V3
+# <img src="https://raw.githubusercontent.com/swagger-api/swagger.io/wordpress/images/assets/SWC-logo-clr.png" height="80">
 
 ## Overview
-This is the swagger codegen project, which allows generation of API client libraries (SDK generation), server stubs and documentation automatically given an [OpenAPI Definition](https://github.com/OAI/OpenAPI-Specification). Currently, the following languages/frameworks are supported:
+This is the Swagger Codegen project, which allows generation of API client libraries (SDK generation), server stubs and documentation automatically given an [OpenAPI Definition](https://github.com/OAI/OpenAPI-Specification). Currently, the following languages/frameworks are supported:
 
 - **API clients**: **Java** (Jersey1.x, Jersey2.x, OkHttp, Retrofit1.x, Retrofit2.x, Feign, RestTemplate, RESTEasy, Vertx, Google API Client Library for Java)
 - **Server stubs**: **Java** (Inflector)
@@ -24,7 +24,9 @@ Check out [OpenAPI Specification](https://github.com/OAI/OpenAPI-Specification) 
     - [Docker](#docker)
       - [Development in Docker](#development-in-docker)
       - [Run docker in Vagrant](#run-docker-in-vagrant)
-      - [Public Docker image](#public-docker-image)
+      - [Public Docker image](#public-pre-built-docker-images)
+      - [Swagger Generator Docker Image](#swagger-generator--docker-image)
+      
     - [Homebrew](#homebrew)
   - [Getting Started](#getting-started)
   - Generators
@@ -48,13 +50,20 @@ Check out [OpenAPI Specification](https://github.com/OAI/OpenAPI-Specification) 
 
 
 ## Compatibility
-The OpenAPI Specification has undergone 3 revisions since initial creation in 2010.  The swagger-codegen project has the following compatibilities with the OpenAPI Specification:
+The OpenAPI Specification has undergone 3 revisions since initial creation in 2010.. The Swagger Codegen project has the following compatibilities with the OpenAPI Specification:
 
 Swagger Codegen Version    | Release Date | OpenAPI Spec compatibility | Notes
 -------------------------- | ------------ | -------------------------- | -----
-[3.0.0](https://github.com/swagger-api/swagger-codegen/releases/tag/v3.0.0)(https://oss.sonatype.org/content/repositories/releases/io/swagger/codegen/v3/swagger-codegen-cli/3.0.0/)| 2018-09-06 | 1.0, 1.1, 1.2, 2.0, 3.0 | Major release with breaking changes
-2.4.0 (current master, upcoming minor release) [SNAPSHOT](https://oss.sonatype.org/content/repositories/snapshots/io/swagger/swagger-codegen-cli/2.4.0-SNAPSHOT/)| TBD   | 1.0, 1.1, 1.2, 2.0   | Minor release with breaking changes
-[2.3.1](https://github.com/swagger-api/swagger-codegen/releases/tag/v2.3.1) (**current stable**) | 2018-01-17   | 1.0, 1.1, 1.2, 2.0   | [tag v2.3.1](https://github.com/swagger-api/swagger-codegen/tree/v2.3.1)
+3.0.5-SNAPSHOT (current 3.0.0, upcoming minor release) [SNAPSHOT](https://oss.sonatype.org/content/repositories/snapshots/io/swagger/codegen/v3/swagger-codegen-cli/3.0.5-SNAPSHOT/)| TBD | 1.0, 1.1, 1.2, 2.0, 3.0 | Minor release
+[3.0.4](https://github.com/swagger-api/swagger-codegen/releases/tag/v3.0.4) (**current stable**) | 2019-01-16   | 1.0, 1.1, 1.2, 2.0, 3.0   | [tag v3.0.4](https://github.com/swagger-api/swagger-codegen/tree/v3.0.4)
+[3.0.3](https://github.com/swagger-api/swagger-codegen/releases/tag/v3.0.3) | 2018-11-30   | 1.0, 1.1, 1.2, 2.0, 3.0   | [tag v3.0.3](https://github.com/swagger-api/swagger-codegen/tree/v3.0.3)
+[3.0.2](https://github.com/swagger-api/swagger-codegen/releases/tag/v3.0.2)| 2018-10-19 | 1.0, 1.1, 1.2, 2.0, 3.0 | Minor release
+[3.0.1](https://github.com/swagger-api/swagger-codegen/releases/tag/v3.0.1)| 2018-10-05 | 1.0, 1.1, 1.2, 2.0, 3.0 | Major release with breaking changes
+[3.0.0](https://github.com/swagger-api/swagger-codegen/releases/tag/v3.0.0)| 2018-09-06 | 1.0, 1.1, 1.2, 2.0, 3.0 | Major release with breaking changes
+2.4.2-SNAPSHOT (current master, upcoming minor release) [SNAPSHOT](https://oss.sonatype.org/content/repositories/snapshots/io/swagger/swagger-codegen-cli/2.4.2-SNAPSHOT/)| TBD   | 1.0, 1.1, 1.2, 2.0   | Minor release
+[2.4.1](https://github.com/swagger-api/swagger-codegen/releases/tag/v2.4.1) (**current stable**) | 2019-01-16   | 1.0, 1.1, 1.2, 2.0   | [tag v2.4.1](https://github.com/swagger-api/swagger-codegen/tree/v2.4.1)
+[2.4.0](https://github.com/swagger-api/swagger-codegen/releases/tag/v2.4.0) | 2018-11-30   | 1.0, 1.1, 1.2, 2.0   | [tag v2.4.0](https://github.com/swagger-api/swagger-codegen/tree/v2.4.0)
+[2.3.1](https://github.com/swagger-api/swagger-codegen/releases/tag/v2.3.1) | 2018-01-17   | 1.0, 1.1, 1.2, 2.0   | [tag v2.3.1](https://github.com/swagger-api/swagger-codegen/tree/v2.3.1)
 [2.3.0](https://github.com/swagger-api/swagger-codegen/releases/tag/v2.3.0) | 2017-12-21   | 1.0, 1.1, 1.2, 2.0   | [tag v2.3.0](https://github.com/swagger-api/swagger-codegen/tree/v2.3.0)
 [2.2.3](https://github.com/swagger-api/swagger-codegen/releases/tag/v2.2.3) | 2017-07-15   | 1.0, 1.1, 1.2, 2.0   | [tag v2.2.3](https://github.com/swagger-api/swagger-codegen/tree/v2.2.3)
 [2.2.2](https://github.com/swagger-api/swagger-codegen/releases/tag/v2.2.2) | 2017-03-01   | 1.0, 1.1, 1.2, 2.0   | [tag v2.2.2](https://github.com/swagger-api/swagger-codegen/tree/v2.2.2)
@@ -162,8 +171,8 @@ See also [online generators](#online-generators)
 The Swagger Generator image provides a ready to use web application (swagger-generator) providing code generation services.
 
 Image accepts the following env variables:
-JAVA_MEM e.g. 1024m
 
+- `JAVA_MEM` e.g. `1024m`
 - `HTTP_PORT` e.g. `8080`
 - `HIDDEN_OPTIONS_PATH` (alternative to `HIDDEN_OPTIONS`): useful if attaching a volume containing a `hiddenOptions.yaml` file definining which languages to hide. e.g. `/data/hiddenOptions.yaml`
 - `HIDDEN_OPTIONS` (alternative to `HIDDEN_OPTIONS_PATH`): allows to pass hidden options as an env variable, in the format `{category}:{language},{language},{language}|{category}:{language},{language},{language}`
@@ -178,6 +187,10 @@ An example of running the container:
 or
 
 `docker run -e "HIDDEN_OPTIONS_PATH=/hiddenOptions.yaml" -e "JAVA_MEM=1024m" -e "HTTP_PORT=80" -p 80:80 --name swagger-generator-v3 swaggerapi/swagger-generator-v3`
+
+This docker image supports custom generators by dropping the generator jar into `/jetty_home/lib/ext` directory (typically via a docker volume); e.g having on host `/my/custom/coolgenerator.jar` and `/my/custom/weirdgenerator.jar`  the following would have them added to generator service generators:
+
+`docker run -e "HIDDEN_OPTIONS_PATH=/hiddenOptions.yaml" -e "JAVA_MEM=1024m" -e "HTTP_PORT=80" -p 80:80 --name swagger-generator-v3 -v /my/custom:/jetty_home/lib/shared swaggerapi/swagger-generator-v3`
 
 ##### Swagger Generator "Minimal" Docker Image
 
@@ -334,12 +347,12 @@ Other languages have petstore samples, too:
 It's just as easy--just use the `-i` flag to point to either a server or file.
 
 ### Modifying the client library format
-Don't like the default swagger client syntax?  Want a different language supported?  No problem!  Swagger codegen processes mustache templates with the [jmustache](https://github.com/samskivert/jmustache) engine.  You can modify our templates or make your own.
+Don't like the default swagger client syntax?  Want a different language supported?  No problem!  Swagger Codegen processes mustache templates with the [jmustache](https://github.com/samskivert/jmustache) engine.  You can modify our templates or make your own.
 
 You can look at `modules/swagger-codegen/src/main/resources/${your-language}` for examples.  To make your own templates, create your own files and use the `-t` flag to specify your template folder.  It actually is that easy.
 
 ### Making your own codegen modules
-If you're starting a project with a new language and don't see what you need, swagger-codegen can help you create a project to generate your own libraries:
+If you're starting a project with a new language and don't see what you need, Swagger Codegen can help you create a project to generate your own libraries:
 
 ```sh
 java -jar modules/swagger-codegen-cli/target/swagger-codegen-cli.jar meta \
@@ -429,7 +442,7 @@ When using selective generation, _only_ the templates needed for the specific ge
 
 ### Ignore file format
 
-Swagger codegen supports a `.swagger-codegen-ignore` file, similar to `.gitignore` or `.dockerignore` you're probably already familiar with.
+Swagger Codegen supports a `.swagger-codegen-ignore` file, similar to `.gitignore` or `.dockerignore` you're probably already familiar with.
 
 The ignore file allows for better control over overwriting existing files than the `--skip-overwrite` flag. With the ignore file, you can specify individual files or directories can be ignored. This can be useful, for example if you only want a subset of the generated code.
 
@@ -610,7 +623,7 @@ Please refer to https://github.com/swagger-api/swagger-codegen/wiki/Server-stub-
 
 ### To build the codegen library
 
-This will create the swagger-codegen library from source.
+This will create the Swagger Codegen library from source.
 
 ```sh
 mvn package
@@ -666,9 +679,7 @@ curl -X POST \
   -H 'content-type: application/json' \
   -d '{
   "specURL" : "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml",
-  "options" : {
-    "lang" : "java"
-  },
+  "lang" : "java",
   "type" : "CLIENT",
   "codegenVersion" : "V3"
 }'
@@ -679,8 +690,8 @@ To customize the SDK, you can specify language specific options  with the follow
 ```json
 {
   "specURL" : "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml",
+  "lang" : "java",
   "options" : {
-    "lang" : "java",
     "additionalProperties" : {
     	"useRuntimeException": true,
     	"useRxJava" : true
@@ -692,7 +703,7 @@ To customize the SDK, you can specify language specific options  with the follow
 ```
 in which the `options` `additionalProperties` for a language can be obtained by submitting a `GET` request to `https://generator3.swagger.io/api/options?language={language}&version={codegenVersion}`:
 
-For example, `curlhttps://generator3.swagger.io/api/options?language=java&version=V3` returns (truncated output):
+For example, `curl https://generator3.swagger.io/api/options?language=java&version=V3` returns (truncated output):
 
 ```json
 {
@@ -737,28 +748,6 @@ Instead of using `specURL` with an URL to the OpenAPI/Swagger spec, one can incl
 }
 ```
 
-
-### Docker image (`swaggerapi/swagger-generator-v3`)
-
-Docker image accepts the following env variables:
-
-- `JAVA_MEM` e.g. `1024m`
-- `HTTP_PORT` e.g. `8080`
-- `HIDDEN_OPTIONS_PATH` (alternative to `HIDDEN_OPTIONS`): useful if attaching a volume containing a `hiddenOptions.yaml` file definining which languages to hide. e.g. `/data/hiddenOptions.yaml`
-- `HIDDEN_OPTIONS` (alternative to `HIDDEN_OPTIONS_PATH`): allows to pass hidden options as an env variable, in the format `{category}:{language},{language},{language}|{category}:{language},{language},{language}`
-e.g. `servers:foo,bar|clientsV3:wtf,isthis` where `category` can be `clients`, `servers`, `clientsV3`, `serversV3`
-
-An example of running the container:
-
-`docker run -e "HIDDEN_OPTIONS=servers:foo,bar|clientsV3:fgf,sdsd" -e "JAVA_MEM=1024m" -e "HTTP_PORT=80" -p 80:80 --name swagger-generator-v3 swaggerapi/swagger-generator-v3:3.0.0`
-
-or
-
-`docker run -e "HIDDEN_OPTIONS_PATH=/hiddenOptions.yaml" -e "JAVA_MEM=1024m" -e "HTTP_PORT=80" -p 80:80 --name swagger-generator-v3 swaggerapi/swagger-generator-v3:3.0.0`
-
-
-
-
 Guidelines for Contribution
 ---------------------------
 
@@ -789,7 +778,3 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-
----
-<img src="http://swagger.io/wp-content/uploads/2016/02/logo.jpg"/>
-

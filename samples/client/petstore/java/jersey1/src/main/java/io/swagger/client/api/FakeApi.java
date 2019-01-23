@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 public class FakeApi {
   private ApiClient apiClient;
 
@@ -290,7 +289,7 @@ public class FakeApi {
     Map<String, String> localVarHeaderParams = new HashMap<String, String>();
     Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    localVarQueryParams.addAll(apiClient.parameterToPair("enum_query_string_array", enumQueryStringArray));
+    localVarCollectionQueryParams.addAll(apiClient.parameterToPairs("multi", "enum_query_string_array", enumQueryStringArray));
     localVarQueryParams.addAll(apiClient.parameterToPair("enum_query_string", enumQueryString));
     localVarQueryParams.addAll(apiClient.parameterToPair("enum_query_integer", enumQueryInteger));
 

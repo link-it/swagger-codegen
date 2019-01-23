@@ -215,6 +215,8 @@ public class CodegenConstants {
     public static final String GENERATE_PROPERTY_CHANGED = "generatePropertyChanged";
     public static final String GENERATE_PROPERTY_CHANGED_DESC = "Specifies that models support raising property changed events.";
 
+    public static final String PRESERVE_COMMENT_NEWLINES = "preserveNewlinesInComments";
+
     public static final String NON_PUBLIC_API = "nonPublicApi";
     public static final String NON_PUBLIC_API_DESC = "Generates code with reduced access modifiers; allows embedding elsewhere without exposing non-public API calls to consumers.";
 
@@ -229,6 +231,8 @@ public class CodegenConstants {
     
     public static final String USE_OAS2 = "useOas2";
     public static final String USE_OAS2_DESC = "use OpenAPI v2.0 (Swagger 1.5.x)";
+
+    public static final String TEMPLATE_ENGINE = "templateEngine";
 
     public static final String IS_ENUM_EXT_NAME = PREFIX_IS + "enum";
     public static final String IS_ALIAS_EXT_NAME = PREFIX_IS + "alias";
@@ -277,6 +281,8 @@ public class CodegenConstants {
     public static final String IS_RESTFUL_EXT_NAME = PREFIX_IS + "restful";
     public static final String IS_DEPRECATED_EXT_NAME = PREFIX_IS + "deprecated";
 
+    public static final String IS_FORM_EXT_NAME = PREFIX_IS + "form";
+
     public static final String IS_FORM_PARAM_EXT_NAME = PREFIX_IS + "form-param";
     public static final String IS_QUERY_PARAM_EXT_NAME = PREFIX_IS + "query-param";
     public static final String IS_PATH_PARAM_EXT_NAME = PREFIX_IS + "path-param";
@@ -322,5 +328,8 @@ public class CodegenConstants {
     public static final String MODEL_TESTS_OPTION = "--model-tests";
     public static final String API_TESTS_OPTION = "--api-tests";
     public static final String USE_OAS2_OPTION = "--use-oas2";
+
+    public static final String HANDLEBARS_TEMPLATE_ENGINE = "handlebars";
+    public static final String MUSTACHE_TEMPLATE_ENGINE = "mustache";
 
 }

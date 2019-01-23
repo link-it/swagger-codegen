@@ -4,7 +4,6 @@ import io.swagger.client.ApiClient;
 
 import io.swagger.client.model.Client;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,9 +23,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-
 @Component("io.swagger.client.api.FakeClassnameTags123Api")
-
 public class FakeClassnameTags123Api {
     private ApiClient apiClient;
 
@@ -47,7 +44,6 @@ public class FakeClassnameTags123Api {
         this.apiClient = apiClient;
     }
 
-    
     /**
      * To test class name in snake case
      * 
@@ -55,29 +51,22 @@ public class FakeClassnameTags123Api {
      * @param body client model
      * @return Client
      * @throws RestClientException if an error occurs while attempting to invoke the API
-
      */
     public Client testClassname(Client body) throws RestClientException {
         Object postBody = body;
-        
         // verify the required parameter 'body' is set
         if (body == null) {
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'body' when calling testClassname");
         }
-        
         String path = UriComponentsBuilder.fromPath("/fake_classname_test").build().toUriString();
         
         final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
         final HttpHeaders headerParams = new HttpHeaders();
         final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
 
-        final String[] accepts = { 
-            "application/json"
-         };
+        final String[] accepts = {  };
         final List<MediaType> accept = apiClient.selectHeaderAccept(accepts);
-        final String[] contentTypes = { 
-            "application/json"
-         };
+        final String[] contentTypes = {  };
         final MediaType contentType = apiClient.selectHeaderContentType(contentTypes);
 
         String[] authNames = new String[] { "api_key_query" };
@@ -85,6 +74,4 @@ public class FakeClassnameTags123Api {
         ParameterizedTypeReference<Client> returnType = new ParameterizedTypeReference<Client>() {};
         return apiClient.invokeAPI(path, HttpMethod.PATCH, queryParams, postBody, headerParams, formParams, accept, contentType, authNames, returnType);
     }
-    
 }
-

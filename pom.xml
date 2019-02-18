@@ -9,7 +9,7 @@
     <artifactId>swagger-codegen-project</artifactId>
     <packaging>pom</packaging>
     <name>swagger-codegen-project</name>
-    <version>3.0.4-gov4j-1</version>
+    <version>3.0.4-gov4j-2-SNAPSHOT</version>
     <url>https://github.com/swagger-api/swagger-codegen</url>
     <scm>
         <connection>scm:git:git@github.com:swagger-api/swagger-codegen.git</connection>
@@ -997,6 +997,54 @@
             </plugin>
         </plugins>
     </reporting>
+    <dependencies>
+	<!-- Includo per risolvere segnalazione owasp -->
+	<dependency>
+		<groupId>com.fasterxml.jackson.core</groupId>
+		<artifactId>jackson-core</artifactId>
+		<version>${jackson-version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.fasterxml.jackson.core</groupId>
+		<artifactId>jackson-annotations</artifactId>
+		<version>${jackson-version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.fasterxml.jackson.core</groupId>
+		<artifactId>jackson-databind</artifactId>
+		<version>${jackson-version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.fasterxml.jackson.dataformat</groupId>
+		<artifactId>jackson-dataformat-yaml</artifactId>
+		<version>${jackson-version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.fasterxml.jackson.dataformat</groupId>
+		<artifactId>jackson-dataformat-xml</artifactId>
+		<version>${jackson-version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.fasterxml.jackson.datatype</groupId>
+		<artifactId>jackson-datatype-joda</artifactId>
+		<version>${jackson-version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.fasterxml.jackson.jaxrs</groupId>
+		<artifactId>jackson-jaxrs-json-provider</artifactId>
+		<version>${jackson-version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.fasterxml.jackson.jaxrs</groupId>
+		<artifactId>jackson-jaxrs-xml-provider</artifactId>
+		<version>${jackson-version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.github.fge</groupId>
+		<artifactId>jackson-coreutils</artifactId>
+		<version>${jackson-coreutils-version}</version>
+	</dependency>
+    </dependencies>
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -1050,7 +1098,8 @@
         <commons-io-version>2.4</commons-io-version>
         <commons-cli-version>1.2</commons-cli-version>
         <junit-version>4.8.1</junit-version>
-        <jackson-version>2.8.9</jackson-version>
+        <jackson-version>2.9.8</jackson-version>
+	<jackson-coreutils-version>1.8</jackson-coreutils-version>
         <maven-plugin-version>1.0.0</maven-plugin-version>
         <commons-lang-version>3.4</commons-lang-version>
         <slf4j-version>1.7.25</slf4j-version>
@@ -1061,7 +1110,8 @@
         <surefire-version>2.22.0</surefire-version>
         <jmockit-version>1.25</jmockit-version>
         <reflections-version>0.9.10</reflections-version>
-        <swagger-codegen-generators-version>1.0.4-gov4j-1</swagger-codegen-generators-version>
+        <swagger-codegen-generators-version>1.0.4-gov4j-2-SNAPSHOT</swagger-codegen-generators-version>
         <jmockit-version>1.42</jmockit-version>
+	<guava-version>26.0-jre</guava-version>
     </properties>
 </project>

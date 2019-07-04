@@ -6,6 +6,7 @@ import io.swagger.codegen.CodegenConfig;
 import io.swagger.codegen.CodegenConfigLoader;
 import io.swagger.codegen.CodegenConstants;
 import io.swagger.codegen.v3.ClientOptInput;
+import io.swagger.codegen.v3.CodegenArgument;
 import io.swagger.codegen.v3.config.CodegenConfigurator;
 import io.swagger.codegen.v3.service.exception.BadRequestException;
 import io.swagger.models.Swagger;
@@ -26,6 +27,7 @@ public class GeneratorUtil {
     protected static final Logger LOGGER = LoggerFactory.getLogger(GeneratorUtil.class);
 
     public static io.swagger.codegen.ClientOptInput getClientOptInputV2(GenerationRequest generationRequest) {
+        LOGGER.debug("getClientOptInputV2 - start");
         final Options options = generationRequest.getOptions();
         String inputSpec = null;
         if (generationRequest.getSpec() == null) {
@@ -38,7 +40,7 @@ public class GeneratorUtil {
         String inputSpecURL = generationRequest.getSpecURL();
         String lang = generationRequest.getLang();
         validateSpec(lang, inputSpec, inputSpecURL);
-
+        LOGGER.debug("getClientOptInputV2 - spec validated");
         final List<io.swagger.models.auth.AuthorizationValue> authorizationValues = io.swagger.codegen.auth.AuthParser.parse(generationRequest.getOptions().getAuth());
         if (generationRequest.getOptions().getAuthorizationValue() != null) {
             io.swagger.models.auth.AuthorizationValue authorizationValue = new io.swagger.models.auth.AuthorizationValue()
@@ -47,7 +49,7 @@ public class GeneratorUtil {
                     .type(generationRequest.getOptions().getAuthorizationValue().getType());
             authorizationValues.add(authorizationValue);
         }
-
+        LOGGER.debug("getClientOptInputV2 - processed auth");
 
         Swagger swagger;
         if (StringUtils.isBlank(inputSpec)) {
@@ -62,6 +64,7 @@ public class GeneratorUtil {
             } else {
                 throw new BadRequestException("No swagger specification was supplied");
             }
+            LOGGER.debug("getClientOptInputV2 - parsed inputSpecURL " + inputSpecURL);
         } else {
             try {
                 JsonNode node = io.swagger.util.Json.mapper().readTree(inputSpec);
@@ -74,6 +77,7 @@ public class GeneratorUtil {
                 LOGGER.error("Exception parsing input spec", e);
                 throw new BadRequestException("The swagger specification supplied was not valid");
             }
+            LOGGER.debug("getClientOptInputV2 - parsed inputSpec");
         }
         if (swagger == null) {
             throw new BadRequestException("The swagger specification supplied was not valid");
@@ -160,6 +164,7 @@ public class GeneratorUtil {
         codegenConfig.additionalProperties().put("swagger", swagger);
 
         clientOptInput.setConfig(codegenConfig);
+        LOGGER.debug("getClientOptInputV2 - end");
         return clientOptInput;
     }
 
@@ -172,6 +177,7 @@ public class GeneratorUtil {
 
     }
     public static ClientOptInput getClientOptInput(GenerationRequest generationRequest) {
+        LOGGER.debug("getClientOptInput - start");
         final Options options = generationRequest.getOptions();
         String inputSpec = null;
         if (generationRequest.getSpec() == null) {
@@ -184,7 +190,7 @@ public class GeneratorUtil {
         String inputSpecURL = generationRequest.getSpecURL();
         String lang = generationRequest.getLang();
         validateSpec(lang, inputSpec, inputSpecURL);
-
+        LOGGER.debug("getClientOptInput - validated");
         CodegenConfigurator configurator = new CodegenConfigurator();
 
         configurator.setOutputDir(generationRequest.getOptions().getOutputDir());
@@ -193,6 +199,7 @@ public class GeneratorUtil {
 
         if (isNotEmpty(lang)) {
             configurator.setLang(lang);
+            readCodegenArguments(configurator, options);
         }
         if (isNotEmpty(options.getAuth())) {
             configurator.setAuth(options.getAuth());
@@ -278,7 +285,29 @@ public class GeneratorUtil {
                 configurator.addAdditionalReservedWordMapping(entry.getKey(), entry.getValue());
             }
         }
-
+        LOGGER.debug("getClientOptInput - end");
         return configurator.toClientOptInput();
+    }
+
+    private static void readCodegenArguments(CodegenConfigurator configurator, Options options) {
+        if (options == null) {
+            return;
+        }
+        io.swagger.codegen.v3.CodegenConfig config = io.swagger.codegen.v3.CodegenConfigLoader.forName(configurator.getLang());
+        if (config == null) {
+            return;
+        }
+        final List<CodegenArgument> arguments = config.readLanguageArguments();
+        if (arguments == null || arguments.isEmpty()) {
+            return;
+        }
+        for (CodegenArgument codegenArgument : arguments) {
+            final String value = options.getCodegenArguments().get(codegenArgument.getOption().substring(2));
+            if (value == null) {
+                continue;
+            }
+            codegenArgument.setValue(value);
+        }
+        configurator.setCodegenArguments(arguments);
     }
 }

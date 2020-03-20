@@ -29,7 +29,9 @@ import javax.validation.constraints.*;
 public interface UserApi  {
    
     @POST
-    @Consumes({ "*/*" })
+    
+    @Consumes({ "application/json" })
+    
     @Operation(summary = "Create user", description = "This can only be done by the logged in user.", tags={ "user" })
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "successful operation")
@@ -38,7 +40,8 @@ public interface UserApi  {
 
     @POST
     @Path("/createWithArray")
-    @Consumes({ "*/*" })
+    @Consumes({ "application/json" })
+    
     @Operation(summary = "Creates list of users with given input array", description = "", tags={ "user" })
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "successful operation")
@@ -47,7 +50,8 @@ public interface UserApi  {
 
     @POST
     @Path("/createWithList")
-    @Consumes({ "*/*" })
+    @Consumes({ "application/json" })
+    
     @Operation(summary = "Creates list of users with given input array", description = "", tags={ "user" })
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "successful operation")
@@ -56,6 +60,8 @@ public interface UserApi  {
 
     @DELETE
     @Path("/{username}")
+    
+    
     @Operation(summary = "Delete user", description = "This can only be done by the logged in user.", tags={ "user" })
     @ApiResponses(value = {
         @ApiResponse(responseCode = "400", description = "Invalid username supplied"),
@@ -65,6 +71,7 @@ public interface UserApi  {
 
     @GET
     @Path("/{username}")
+    
     @Produces({ "application/xml", "application/json" })
     @Operation(summary = "Get user by user name", description = "", tags={ "user" })
     @ApiResponses(value = {
@@ -76,6 +83,7 @@ public interface UserApi  {
 
     @GET
     @Path("/login")
+    
     @Produces({ "application/xml", "application/json" })
     @Operation(summary = "Logs user into the system", description = "", tags={ "user" })
     @ApiResponses(value = {
@@ -86,6 +94,8 @@ public interface UserApi  {
 
     @GET
     @Path("/logout")
+    
+    
     @Operation(summary = "Logs out current logged in user session", description = "", tags={ "user" })
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "successful operation")
@@ -95,6 +105,7 @@ public interface UserApi  {
     @PUT
     @Path("/{username}")
     @Consumes({ "*/*" })
+    
     @Operation(summary = "Updated user", description = "This can only be done by the logged in user.", tags={ "user" })
     @ApiResponses(value = {
         @ApiResponse(responseCode = "400", description = "Invalid user supplied"),

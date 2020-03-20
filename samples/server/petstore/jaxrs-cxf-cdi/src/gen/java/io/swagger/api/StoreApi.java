@@ -76,15 +76,16 @@ public class StoreApi  {
         @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = Order.class))),
         @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
         @ApiResponse(responseCode = "404", description = "Order not found") })
-    public Response getOrderById( @DecimalMin("1") @DecimalMax("5")
-@Parameter(description = "ID of pet that needs to be fetched",required=true) @PathParam("orderId") Integer orderId
+    public Response getOrderById( @Min(1L) @Max(5L)
+@Parameter(description = "ID of pet that needs to be fetched",required=true, schema=@Schema(allowableValues={  }, minimum="1", maximum="5")
+) @PathParam("orderId") Long orderId
 ) {
         return delegate.getOrderById(orderId, securityContext);
     }
 
     @POST
     @Path("/order")
-    @Consumes({ "*/*" })
+    @Consumes({ "application/json" })
     @Produces({ "application/xml", "application/json" })
     @Operation(summary = "Place an order for a pet", description = "", tags={ "store" })
     @ApiResponses(value = { 

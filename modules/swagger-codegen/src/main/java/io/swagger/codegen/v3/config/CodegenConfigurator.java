@@ -31,6 +31,7 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -70,7 +71,7 @@ public class CodegenConfigurator implements Serializable {
     private String artifactVersion;
     private String library;
     private String ignoreFileOverride;
-    private List<CodegenArgument> codegenArguments;
+    private List<CodegenArgument> codegenArguments = new ArrayList<>();
     private Map<String, String> systemProperties = new HashMap<String, String>();
     private Map<String, String> instantiationTypes = new HashMap<String, String>();
     private Map<String, String> typeMappings = new HashMap<String, String>();
@@ -437,7 +438,7 @@ public class CodegenConfigurator implements Serializable {
                     data = ClasspathHelper.loadFileFromClasspath(location);
                 }
             }
-            LOGGER.debug("Loaded raw data: {}", data);
+            LOGGER.trace("Loaded raw data: {}", data);
             return data;
     }
 
@@ -467,9 +468,18 @@ public class CodegenConfigurator implements Serializable {
             SwaggerParseResult result = new OpenAPIParser().readContents(inputSpec, authorizationValues, options);
             OpenAPI openAPI = result.getOpenAPI();
 
+            if (config.needsUnflattenedSpec()) {
+                ParseOptions optionsUnflattened = new ParseOptions();
+                optionsUnflattened.setResolve(true);
+                SwaggerParseResult resultUnflattened = new OpenAPIParser().readContents(inputSpec, authorizationValues, optionsUnflattened);
+                OpenAPI openAPIUnflattened = resultUnflattened.getOpenAPI();
+                config.setUnflattenedOpenAPI(openAPIUnflattened);
+            }
+
             input.opts(new ClientOpts())
                     .openAPI(openAPI);
 
+            LOGGER.debug("getClientOptInput - parsed inputSpec");
         } else {
             String specContent = null;
             try {
@@ -492,9 +502,18 @@ public class CodegenConfigurator implements Serializable {
             options.setFlatten(true);
             SwaggerParseResult result = new OpenAPIParser().readLocation(inputSpecURL, authorizationValues, options);
             OpenAPI openAPI = result.getOpenAPI();
-
+            LOGGER.debug("getClientOptInput - parsed inputSpecURL " + inputSpecURL);
             input.opts(new ClientOpts())
                     .openAPI(openAPI);
+
+            if (config.needsUnflattenedSpec()) {
+                ParseOptions optionsUnflattened = new ParseOptions();
+                optionsUnflattened.setResolve(true);
+                SwaggerParseResult resultUnflattened = new OpenAPIParser().readLocation(inputSpecURL, authorizationValues, optionsUnflattened);
+                OpenAPI openAPIUnflattened = resultUnflattened.getOpenAPI();
+                config.setUnflattenedOpenAPI(openAPIUnflattened);
+            }
+
         }
 
         config.setOutputDir(outputDir);
@@ -578,6 +597,10 @@ public class CodegenConfigurator implements Serializable {
 
     public void setCodegenArguments(List<CodegenArgument> codegenArguments) {
         this.codegenArguments = codegenArguments;
+    }
+
+    public List<CodegenArgument> getCodegenArguments() {
+        return this.codegenArguments;
     }
 
     private void setSystemProperties() {

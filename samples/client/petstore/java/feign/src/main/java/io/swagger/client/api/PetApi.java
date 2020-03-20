@@ -3,9 +3,11 @@ package io.swagger.client.api;
 import io.swagger.client.ApiClient;
 import io.swagger.client.EncodingUtils;
 
+import io.swagger.client.model.AllPetsResponse;
 import java.io.File;
 import io.swagger.client.model.ModelApiResponse;
 import io.swagger.client.model.Pet;
+import io.swagger.client.model.SinglePetResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +40,7 @@ public interface PetApi extends ApiClient.Api {
       "Accept: */*",
     "api_key: {apiKey}"
   })
-  void deletePet(@Param("petId") Integer petId, @Param("apiKey") String apiKey);
+  void deletePet(@Param("petId") Long petId, @Param("apiKey") String apiKey);
   /**
    * Finds Pets by status
    * Multiple status values can be provided with comma separated strings
@@ -80,7 +82,7 @@ public interface PetApi extends ApiClient.Api {
    */
   public static class FindPetsByStatusQueryParams extends HashMap<String, Object> {
     public FindPetsByStatusQueryParams status(final List<String> value) {
-      put("status", EncodingUtils.encodeCollection(value, "multi"));
+      put("status", EncodingUtils.encodeCollection(value, "csv"));
       return this;
     }
   }
@@ -125,10 +127,20 @@ public interface PetApi extends ApiClient.Api {
    */
   public static class FindPetsByTagsQueryParams extends HashMap<String, Object> {
     public FindPetsByTagsQueryParams tags(final List<String> value) {
-      put("tags", EncodingUtils.encodeCollection(value, "multi"));
+      put("tags", EncodingUtils.encodeCollection(value, "csv"));
       return this;
     }
   }
+  /**
+   * 
+   * 
+   * @return AllPetsResponse
+   */
+  @RequestLine("GET /allPets")
+  @Headers({
+      "Accept: application/json",
+  })
+  AllPetsResponse getAllPets();
   /**
    * Find pet by ID
    * Returns a single pet
@@ -139,7 +151,17 @@ public interface PetApi extends ApiClient.Api {
   @Headers({
       "Accept: application/json",
   })
-  Pet getPetById(@Param("petId") Integer petId);
+  Pet getPetById(@Param("petId") Long petId);
+  /**
+   * 
+   * 
+   * @return SinglePetResponse
+   */
+  @RequestLine("GET /randomPet")
+  @Headers({
+      "Accept: application/json",
+  })
+  SinglePetResponse getRandomPet();
   /**
    * Update an existing pet
    * 
@@ -163,7 +185,7 @@ public interface PetApi extends ApiClient.Api {
       "Content-Type: application/x-www-form-urlencoded",
       "Accept: */*",
   })
-  void updatePetWithForm(@Param("petId") Integer petId, @Param("name") String name, @Param("status") String status);
+  void updatePetWithForm(@Param("petId") Long petId, @Param("name") String name, @Param("status") String status);
   /**
    * uploads an image
    * 
@@ -177,5 +199,5 @@ public interface PetApi extends ApiClient.Api {
       "Content-Type: multipart/form-data",
       "Accept: application/json",
   })
-  ModelApiResponse uploadFile(@Param("petId") Integer petId, @Param("additionalMetadata") String additionalMetadata, @Param("file") File file);
+  ModelApiResponse uploadFile(@Param("petId") Long petId, @Param("additionalMetadata") String additionalMetadata, @Param("file") File file);
 }

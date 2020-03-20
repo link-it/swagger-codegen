@@ -4,6 +4,10 @@ import io.swagger.client.ApiClient;
 import io.swagger.client.EncodingUtils;
 
 import java.math.BigDecimal;
+import io.swagger.client.model.Body2;
+import io.swagger.client.model.Body3;
+import io.swagger.client.model.Body4;
+import io.swagger.client.model.Body5;
 import io.swagger.client.model.Client;
 import io.swagger.client.model.OuterComposite;
 
@@ -85,11 +89,10 @@ public interface FakeApi extends ApiClient.Api {
       "Content-Type: application/xml; charset&#x3D;utf-8",
       "Accept: */*",
   })
-  void testEndpointParameters(Object body);
+  void testEndpointParameters(Body2 body);
   /**
    * To test enum parameters
    * To test enum parameters
-   * @param body  (optional)
    * @param enumHeaderStringArray Header parameter enum test (string array) (optional)
    * @param enumHeaderString Header parameter enum test (string) (optional)
    * @param enumQueryStringArray Query parameter enum test (string array) (optional)
@@ -102,7 +105,7 @@ public interface FakeApi extends ApiClient.Api {
     "enum_header_string_array: {enumHeaderStringArray}",
     "enum_header_string: {enumHeaderString}"
   })
-  void testEnumParameters(Object body, @Param("enumHeaderStringArray") List<String> enumHeaderStringArray, @Param("enumHeaderString") String enumHeaderString, @Param("enumQueryStringArray") List<String> enumQueryStringArray, @Param("enumQueryString") String enumQueryString, @Param("enumQueryInteger") Integer enumQueryInteger);
+  void testEnumParameters(@Param("enumHeaderStringArray") List<String> enumHeaderStringArray, @Param("enumHeaderString") String enumHeaderString, @Param("enumQueryStringArray") List<String> enumQueryStringArray, @Param("enumQueryString") String enumQueryString, @Param("enumQueryInteger") Integer enumQueryInteger);
 
   /**
    * To test enum parameters
@@ -112,7 +115,6 @@ public interface FakeApi extends ApiClient.Api {
    * is convenient for services with optional query parameters, especially when
    * used with the {@link TestEnumParametersQueryParams} class that allows for
    * building up this map in a fluent style.
-   * @param body  (optional)
    * @param enumHeaderStringArray Header parameter enum test (string array) (optional)
    * @param enumHeaderString Header parameter enum test (string) (optional)
    * @param queryParams Map of query parameters as name-value pairs
@@ -130,7 +132,7 @@ public interface FakeApi extends ApiClient.Api {
       "enum_header_string_array: {enumHeaderStringArray}",
       "enum_header_string: {enumHeaderString}"
   })
-  void testEnumParameters(Object body, @Param("enumHeaderStringArray") List<String> enumHeaderStringArray, @Param("enumHeaderString") String enumHeaderString, @QueryMap(encoded=true) Map<String, Object> queryParams);
+  void testEnumParameters(@Param("enumHeaderStringArray") List<String> enumHeaderStringArray, @Param("enumHeaderString") String enumHeaderString, @QueryMap(encoded=true) Map<String, Object> queryParams);
 
   /**
    * A convenience class for generating query parameters for the
@@ -138,7 +140,7 @@ public interface FakeApi extends ApiClient.Api {
    */
   public static class TestEnumParametersQueryParams extends HashMap<String, Object> {
     public TestEnumParametersQueryParams enumQueryStringArray(final List<String> value) {
-      put("enum_query_string_array", EncodingUtils.encodeCollection(value, "multi"));
+      put("enum_query_string_array", EncodingUtils.encodeCollection(value, "csv"));
       return this;
     }
     public TestEnumParametersQueryParams enumQueryString(final String value) {
@@ -150,6 +152,17 @@ public interface FakeApi extends ApiClient.Api {
       return this;
     }
   }
+  /**
+   * To test enum parameters
+   * To test enum parameters
+   * @param body  (optional)
+   */
+  @RequestLine("POST /fake/enum/form")
+  @Headers({
+      "Content-Type: */*",
+      "Accept: */*",
+  })
+  void testEnumRequestBody(Body4 body);
   /**
    * test inline additionalProperties
    * 
@@ -166,9 +179,10 @@ public interface FakeApi extends ApiClient.Api {
    * 
    * @param body  (required)
    */
-  @RequestLine("GET /fake/jsonFormData")
+  @RequestLine("POST /fake/jsonFormData")
   @Headers({
+      "Content-Type: application/json",
       "Accept: */*",
   })
-  void testJsonFormData(Object body);
+  void testJsonFormData(Body5 body);
 }

@@ -16,64 +16,64 @@ import org.apache.commons.lang3.ObjectUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 /**
  * Animal
  */
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "Discriminator{propertyName&#x3D;&#x27;className&#x27;, mapping&#x3D;null}", visible = true )
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "className", visible = true )
 @JsonSubTypes({
   @JsonSubTypes.Type(value = Dog.class, name = "Dog"),
   @JsonSubTypes.Type(value = Cat.class, name = "Cat"),
 })
+
 public class Animal {
-
-  @JsonProperty("className")
-
+  @JsonTypeId
   private String className = null;
 
   @JsonProperty("color")
-
   private String color = "red";
+
   public Animal className(String className) {
     this.className = className;
     return this;
   }
 
-  
-
-  /**
-  * Get className
-  * @return className
+   /**
+   * Get className
+   * @return className
   **/
   @Schema(required = true, description = "")
   public String getClassName() {
     return className;
   }
+
   public void setClassName(String className) {
     this.className = className;
   }
+
   public Animal color(String color) {
     this.color = color;
     return this;
   }
 
-  
-
-  /**
-  * Get color
-  * @return color
+   /**
+   * Get color
+   * @return color
   **/
   @Schema(description = "")
   public String getColor() {
     return color;
   }
+
   public void setColor(String color) {
     this.color = color;
   }
+
+
   @Override
   public boolean equals(java.lang.Object o) {
   if (this == o) {
@@ -91,6 +91,7 @@ public class Animal {
   public int hashCode() {
     return ObjectUtils.hashCodeMulti(className, color);
   }
+
 
   @Override
   public String toString() {

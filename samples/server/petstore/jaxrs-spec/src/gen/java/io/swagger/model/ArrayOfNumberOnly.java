@@ -8,12 +8,12 @@ import javax.validation.constraints.*;
 import javax.validation.Valid;
 
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.*;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
-public class ArrayOfNumberOnly  implements Serializable {
+public class ArrayOfNumberOnly  implements Serializable  {
   private @Valid List<BigDecimal> arrayNumber = new ArrayList<BigDecimal>();
 
   /**
@@ -24,8 +24,9 @@ public class ArrayOfNumberOnly  implements Serializable {
   }
 
   
-  @Schema(description = "")
+  @ApiModelProperty(value = "")
   @JsonProperty("ArrayNumber")
+
   public List<BigDecimal> getArrayNumber() {
     return arrayNumber;
   }

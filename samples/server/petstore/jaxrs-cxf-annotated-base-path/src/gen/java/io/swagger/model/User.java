@@ -12,12 +12,14 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 /**
   * A User who is purchasing from the pet store
  **/
 @Schema(description="A User who is purchasing from the pet store")
-public class User  {
+public class User   {
   
   @Schema(description = "")
   private Long id = null;

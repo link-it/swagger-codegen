@@ -6,9 +6,11 @@ import retrofit.Callback;
 import retrofit.http.*;
 import retrofit.mime.*;
 
+import io.swagger.client.model.AllPetsResponse;
 import java.io.File;
 import io.swagger.client.model.ModelApiResponse;
 import io.swagger.client.model.Pet;
+import io.swagger.client.model.SinglePetResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +49,7 @@ public interface PetApi {
    */
   @DELETE("/pet/{petId}")
   Void deletePet(
-    @retrofit.http.Path("petId") Integer petId, @retrofit.http.Header("api_key") String apiKey
+    @retrofit.http.Path("petId") Long petId, @retrofit.http.Header("api_key") String apiKey
   );
 
   /**
@@ -59,7 +61,7 @@ public interface PetApi {
    */
   @DELETE("/pet/{petId}")
   void deletePet(
-    @retrofit.http.Path("petId") Integer petId, @retrofit.http.Header("api_key") String apiKey, Callback<Void> cb
+    @retrofit.http.Path("petId") Long petId, @retrofit.http.Header("api_key") String apiKey, Callback<Void> cb
   );
   /**
    * Finds Pets by status
@@ -106,6 +108,25 @@ public interface PetApi {
     @retrofit.http.Query("tags") List<String> tags, Callback<List<Pet>> cb
   );
   /**
+   * 
+   * Sync method
+   * 
+   * @return AllPetsResponse
+   */
+  @GET("/allPets")
+  AllPetsResponse getAllPets();
+    
+
+  /**
+   * 
+   * Async method
+   * @param cb callback method
+   */
+  @GET("/allPets")
+  void getAllPets(
+    Callback<AllPetsResponse> cb
+  );
+  /**
    * Find pet by ID
    * Sync method
    * Returns a single pet
@@ -114,7 +135,7 @@ public interface PetApi {
    */
   @GET("/pet/{petId}")
   Pet getPetById(
-    @retrofit.http.Path("petId") Integer petId
+    @retrofit.http.Path("petId") Long petId
   );
 
   /**
@@ -125,7 +146,26 @@ public interface PetApi {
    */
   @GET("/pet/{petId}")
   void getPetById(
-    @retrofit.http.Path("petId") Integer petId, Callback<Pet> cb
+    @retrofit.http.Path("petId") Long petId, Callback<Pet> cb
+  );
+  /**
+   * 
+   * Sync method
+   * 
+   * @return SinglePetResponse
+   */
+  @GET("/randomPet")
+  SinglePetResponse getRandomPet();
+    
+
+  /**
+   * 
+   * Async method
+   * @param cb callback method
+   */
+  @GET("/randomPet")
+  void getRandomPet(
+    Callback<SinglePetResponse> cb
   );
   /**
    * Update an existing pet
@@ -161,7 +201,7 @@ public interface PetApi {
   @retrofit.http.FormUrlEncoded
   @POST("/pet/{petId}")
   Void updatePetWithForm(
-    @retrofit.http.Path("petId") Integer petId, @retrofit.http.Field("name") String name, @retrofit.http.Field("status") String status
+    @retrofit.http.Path("petId") Long petId, @retrofit.http.Field("name") String name, @retrofit.http.Field("status") String status
   );
 
   /**
@@ -175,7 +215,7 @@ public interface PetApi {
   @retrofit.http.FormUrlEncoded
   @POST("/pet/{petId}")
   void updatePetWithForm(
-    @retrofit.http.Path("petId") Integer petId, @retrofit.http.Field("name") String name, @retrofit.http.Field("status") String status, Callback<Void> cb
+    @retrofit.http.Path("petId") Long petId, @retrofit.http.Field("name") String name, @retrofit.http.Field("status") String status, Callback<Void> cb
   );
   /**
    * uploads an image
@@ -189,7 +229,7 @@ public interface PetApi {
   @retrofit.http.Multipart
   @POST("/pet/{petId}/uploadImage")
   ModelApiResponse uploadFile(
-    @retrofit.http.Path("petId") Integer petId, @retrofit.http.Part("additionalMetadata") String additionalMetadata, @retrofit.http.Part("file") TypedFile file
+    @retrofit.http.Path("petId") Long petId, @retrofit.http.Part("additionalMetadata") String additionalMetadata, @retrofit.http.Part("file") TypedFile file
   );
 
   /**
@@ -203,6 +243,6 @@ public interface PetApi {
   @retrofit.http.Multipart
   @POST("/pet/{petId}/uploadImage")
   void uploadFile(
-    @retrofit.http.Path("petId") Integer petId, @retrofit.http.Part("additionalMetadata") String additionalMetadata, @retrofit.http.Part("file") TypedFile file, Callback<ModelApiResponse> cb
+    @retrofit.http.Path("petId") Long petId, @retrofit.http.Part("additionalMetadata") String additionalMetadata, @retrofit.http.Part("file") TypedFile file, Callback<ModelApiResponse> cb
   );
 }

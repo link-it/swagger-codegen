@@ -6,12 +6,12 @@ import javax.validation.constraints.*;
 import javax.validation.Valid;
 
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.*;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
-public class Cat extends Animal implements Serializable {
+public class Cat extends Animal implements Serializable  {
   private @Valid Boolean declawed = null;
 
   /**
@@ -22,9 +22,10 @@ public class Cat extends Animal implements Serializable {
   }
 
   
-  @Schema(description = "")
+  @ApiModelProperty(value = "")
   @JsonProperty("declawed")
-  public Boolean isisDeclawed() {
+
+  public Boolean isDeclawed() {
     return declawed;
   }
   public void setDeclawed(Boolean declawed) {

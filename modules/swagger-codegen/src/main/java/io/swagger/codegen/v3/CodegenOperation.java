@@ -26,6 +26,7 @@ public class CodegenOperation extends CodegenObject {
     public List<CodegenParameter> pathParams = new ArrayList<CodegenParameter>();
     public List<CodegenParameter> queryParams = new ArrayList<CodegenParameter>();
     public List<CodegenParameter> headerParams = new ArrayList<CodegenParameter>();
+    public List<CodegenParameter> cookieParams = new ArrayList<CodegenParameter>();
     public List<CodegenParameter> formParams = new ArrayList<CodegenParameter>();
     public List<CodegenParameter> requiredParams = new ArrayList<CodegenParameter>();
     public List<CodegenSecurity> authMethods;
@@ -77,6 +78,15 @@ public class CodegenOperation extends CodegenObject {
     }
 
     /**
+     * Check if there's at least one cookie parameter
+     *
+     * @return true if cookie parameter exists, false otherwise
+     */
+    public boolean getHasCookieParams() {
+        return nonempty(cookieParams);
+    }
+
+    /**
      * Check if there's at least one path parameter
      *
      * @return true if path parameter exists, false otherwise
@@ -108,7 +118,7 @@ public class CodegenOperation extends CodegenObject {
      *
      * @return true if act as Restful index method, false otherwise
      */
-    public boolean isRestfulIndex() {
+    public boolean getIsRestfulIndex() {
         return "GET".equals(httpMethod) && "".equals(pathWithoutBaseName());
     }
 
@@ -117,7 +127,7 @@ public class CodegenOperation extends CodegenObject {
      *
      * @return true if act as Restful show method, false otherwise
      */
-    public boolean isRestfulShow() {
+    public boolean getIsRestfulShow() {
         return "GET".equalsIgnoreCase(httpMethod) && isMemberPath();
     }
 
@@ -126,7 +136,7 @@ public class CodegenOperation extends CodegenObject {
      *
      * @return true if act as Restful create method, false otherwise
      */
-    public boolean isRestfulCreate() {
+    public boolean getIsRestfulCreate() {
         return "POST".equalsIgnoreCase(httpMethod) && "".equals(pathWithoutBaseName());
     }
 
@@ -135,7 +145,7 @@ public class CodegenOperation extends CodegenObject {
      *
      * @return true if act as Restful update method, false otherwise
      */
-    public boolean isRestfulUpdate() {
+    public boolean getIsRestfulUpdate() {
         return Arrays.asList("PUT", "PATCH").contains(httpMethod.toUpperCase()) && isMemberPath();
     }
 
@@ -144,7 +154,7 @@ public class CodegenOperation extends CodegenObject {
      *
      * @return true request method is PUT, PATCH or POST; false otherwise
      */
-    public boolean isBodyAllowed() {
+    public boolean getIsBodyAllowed() {
         return Arrays.asList("PUT", "PATCH", "POST").contains(httpMethod.toUpperCase());
     }
 
@@ -153,7 +163,7 @@ public class CodegenOperation extends CodegenObject {
      *
      * @return true if act as Restful destroy method, false otherwise
      */
-    public boolean isRestfulDestroy() {
+    public boolean getIsRestfulDestroy() {
         return "DELETE".equalsIgnoreCase(httpMethod) && isMemberPath();
     }
 
@@ -162,8 +172,8 @@ public class CodegenOperation extends CodegenObject {
      *
      * @return true if Restful-style, false otherwise
      */
-    public boolean isRestful() {
-        return isRestfulIndex() || isRestfulShow() || isRestfulCreate() || isRestfulUpdate() || isRestfulDestroy();
+    public boolean getIsRestful() {
+        return getIsRestfulIndex() || getIsRestfulShow() || getIsRestfulCreate() || getIsRestfulUpdate() || getIsRestfulDestroy();
     }
 
     /**
@@ -292,6 +302,7 @@ public class CodegenOperation extends CodegenObject {
         result = 31 * result + (pathParams != null ? pathParams.hashCode() : 0);
         result = 31 * result + (queryParams != null ? queryParams.hashCode() : 0);
         result = 31 * result + (headerParams != null ? headerParams.hashCode() : 0);
+        result = 31 * result + (cookieParams != null ? cookieParams.hashCode() : 0);
         result = 31 * result + (formParams != null ? formParams.hashCode() : 0);
         result = 31 * result + (authMethods != null ? authMethods.hashCode() : 0);
         result = 31 * result + (tags != null ? tags.hashCode() : 0);
@@ -403,6 +414,10 @@ public class CodegenOperation extends CodegenObject {
         return headerParams;
     }
 
+    public List<CodegenParameter> getCookieParams() {
+        return cookieParams;
+    }
+
     public List<CodegenParameter> getFormParams() {
         return formParams;
     }
@@ -465,30 +480,6 @@ public class CodegenOperation extends CodegenObject {
 
     public String getOperationIdSnakeCase() {
         return operationIdSnakeCase;
-    }
-
-    public Boolean getIsRestfulIndex() {
-        return getBooleanValue(CodegenConstants.IS_RESTFUL_INDEX_EXT_NAME);
-    }
-
-    public Boolean getIsRestfulShow() {
-        return getBooleanValue(CodegenConstants.IS_RESTFUL_SHOW_EXT_NAME);
-    }
-
-    public Boolean getIsRestfulCreate() {
-        return getBooleanValue(CodegenConstants.IS_RESTFUL_CREATE_EXT_NAME);
-    }
-
-    public Boolean getIsRestfulUpdate() {
-        return getBooleanValue(CodegenConstants.IS_RESTFUL_UPDATE_EXT_NAME);
-    }
-
-    public Boolean getIsRestfulDestroy() {
-        return getBooleanValue(CodegenConstants.IS_RESTFUL_DESTROY_EXT_NAME);
-    }
-
-    public Boolean getIsRestful() {
-        return getBooleanValue(CodegenConstants.IS_RESTFUL_EXT_NAME);
     }
 
     public Boolean getIsDeprecated() {

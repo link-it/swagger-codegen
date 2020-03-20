@@ -76,7 +76,8 @@
         },
         "security" : [ {
           "petstore_auth" : [ "write:pets", "read:pets" ]
-        } ]
+        } ],
+        "x-codegen-request-body-name" : "body"
       },
       "post" : {
         "tags" : [ "pet" ],
@@ -106,7 +107,8 @@
         },
         "security" : [ {
           "petstore_auth" : [ "write:pets", "read:pets" ]
-        } ]
+        } ],
+        "x-codegen-request-body-name" : "body"
       }
     },
     "/pet/findByStatus" : {
@@ -120,13 +122,14 @@
           "in" : "query",
           "description" : "Status values that need to be considered for filter",
           "required" : true,
+          "style" : "form",
           "explode" : false,
           "schema" : {
             "type" : "array",
             "items" : {
               "type" : "string",
-              "default" : "available",
-              "enum" : [ "available", "pending", "sold" ]
+              "enum" : [ "available", "pending", "sold" ],
+              "default" : "available"
             }
           }
         } ],
@@ -173,6 +176,7 @@
           "in" : "query",
           "description" : "Tags to filter by",
           "required" : true,
+          "style" : "form",
           "explode" : false,
           "schema" : {
             "type" : "array",
@@ -446,7 +450,8 @@
             "description" : "Invalid Order",
             "content" : { }
           }
-        }
+        },
+        "x-codegen-request-body-name" : "body"
       }
     },
     "/store/order/{order_id}" : {
@@ -541,7 +546,8 @@
             "description" : "successful operation",
             "content" : { }
           }
-        }
+        },
+        "x-codegen-request-body-name" : "body"
       }
     },
     "/user/createWithArray" : {
@@ -568,7 +574,8 @@
             "description" : "successful operation",
             "content" : { }
           }
-        }
+        },
+        "x-codegen-request-body-name" : "body"
       }
     },
     "/user/createWithList" : {
@@ -595,7 +602,8 @@
             "description" : "successful operation",
             "content" : { }
           }
-        }
+        },
+        "x-codegen-request-body-name" : "body"
       }
     },
     "/user/login" : {
@@ -746,7 +754,8 @@
             "description" : "User not found",
             "content" : { }
           }
-        }
+        },
+        "x-codegen-request-body-name" : "body"
       },
       "delete" : {
         "tags" : [ "user" ],
@@ -804,7 +813,8 @@
         },
         "security" : [ {
           "api_key_query" : [ ]
-        } ]
+        } ],
+        "x-codegen-request-body-name" : "body"
       }
     },
     "/fake" : {
@@ -817,12 +827,14 @@
           "name" : "enum_header_string_array",
           "in" : "header",
           "description" : "Header parameter enum test (string array)",
+          "style" : "simple",
+          "explode" : false,
           "schema" : {
             "type" : "array",
             "items" : {
               "type" : "string",
-              "default" : "$",
-              "enum" : [ ">", "$" ]
+              "enum" : [ ">", "$" ],
+              "default" : "$"
             }
           }
         }, {
@@ -831,20 +843,21 @@
           "description" : "Header parameter enum test (string)",
           "schema" : {
             "type" : "string",
-            "default" : "-efg",
-            "enum" : [ "_abc", "-efg", "(xyz)" ]
+            "enum" : [ "_abc", "-efg", "(xyz)" ],
+            "default" : "-efg"
           }
         }, {
           "name" : "enum_query_string_array",
           "in" : "query",
           "description" : "Query parameter enum test (string array)",
+          "style" : "form",
           "explode" : false,
           "schema" : {
             "type" : "array",
             "items" : {
               "type" : "string",
-              "default" : "$",
-              "enum" : [ ">", "$" ]
+              "enum" : [ ">", "$" ],
+              "default" : "$"
             }
           }
         }, {
@@ -853,8 +866,8 @@
           "description" : "Query parameter enum test (string)",
           "schema" : {
             "type" : "string",
-            "default" : "-efg",
-            "enum" : [ "_abc", "-efg", "(xyz)" ]
+            "enum" : [ "_abc", "-efg", "(xyz)" ],
+            "default" : "-efg"
           }
         }, {
           "name" : "enum_query_integer",
@@ -876,15 +889,15 @@
                     "description" : "Form parameter enum test (string array)",
                     "items" : {
                       "type" : "string",
-                      "default" : "$",
-                      "enum" : [ ">", "$" ]
+                      "enum" : [ ">", "$" ],
+                      "default" : "$"
                     }
                   },
                   "enum_form_string" : {
                     "type" : "string",
                     "description" : "Form parameter enum test (string)",
-                    "default" : "-efg",
-                    "enum" : [ "_abc", "-efg", "(xyz)" ]
+                    "enum" : [ "_abc", "-efg", "(xyz)" ],
+                    "default" : "-efg"
                   },
                   "enum_query_double" : {
                     "type" : "number",
@@ -923,7 +936,8 @@
                     "maximum" : 100,
                     "minimum" : 10,
                     "type" : "integer",
-                    "description" : "None"
+                    "description" : "None",
+                    "format" : "int32"
                   },
                   "int32" : {
                     "maximum" : 200,
@@ -1008,7 +1022,8 @@
                     "maximum" : 100,
                     "minimum" : 10,
                     "type" : "integer",
-                    "description" : "None"
+                    "description" : "None",
+                    "format" : "int32"
                   },
                   "int32" : {
                     "maximum" : 200,
@@ -1129,7 +1144,8 @@
               }
             }
           }
-        }
+        },
+        "x-codegen-request-body-name" : "body"
       }
     },
     "/fake/outer/number" : {
@@ -1159,7 +1175,8 @@
               }
             }
           }
-        }
+        },
+        "x-codegen-request-body-name" : "body"
       }
     },
     "/fake/outer/string" : {
@@ -1189,7 +1206,8 @@
               }
             }
           }
-        }
+        },
+        "x-codegen-request-body-name" : "body"
       }
     },
     "/fake/outer/boolean" : {
@@ -1219,7 +1237,8 @@
               }
             }
           }
-        }
+        },
+        "x-codegen-request-body-name" : "body"
       }
     },
     "/fake/outer/composite" : {
@@ -1249,7 +1268,8 @@
               }
             }
           }
-        }
+        },
+        "x-codegen-request-body-name" : "body"
       }
     },
     "/fake/jsonFormData" : {
@@ -1309,7 +1329,8 @@
             "description" : "successful operation",
             "content" : { }
           }
-        }
+        },
+        "x-codegen-request-body-name" : "param"
       }
     },
     "/another-fake/dummy" : {
@@ -1340,12 +1361,46 @@
               }
             }
           }
-        }
+        },
+        "x-codegen-request-body-name" : "body"
       }
     }
   },
   "components" : {
     "schemas" : {
+      "Order" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "petId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "quantity" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "shipDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "Order Status",
+            "enum" : [ "placed", "approved", "delivered" ]
+          },
+          "complete" : {
+            "type" : "boolean",
+            "default" : false
+          }
+        },
+        "xml" : {
+          "name" : "Order"
+        }
+      },
       "Category" : {
         "type" : "object",
         "properties" : {
@@ -1397,61 +1452,65 @@
           "name" : "User"
         }
       },
-      "OuterNumber" : {
-        "type" : "number"
-      },
-      "ArrayOfNumberOnly" : {
+      "Tag" : {
         "type" : "object",
         "properties" : {
-          "ArrayNumber" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        },
+        "xml" : {
+          "name" : "Tag"
+        }
+      },
+      "Pet" : {
+        "required" : [ "name", "photoUrls" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64",
+            "x-is-unique" : true
+          },
+          "category" : {
+            "$ref" : "#/components/schemas/Category"
+          },
+          "name" : {
+            "type" : "string",
+            "example" : "doggie"
+          },
+          "photoUrls" : {
             "type" : "array",
+            "xml" : {
+              "name" : "photoUrl",
+              "wrapped" : true
+            },
             "items" : {
-              "type" : "number"
+              "type" : "string"
             }
-          }
-        }
-      },
-      "Capitalization" : {
-        "type" : "object",
-        "properties" : {
-          "smallCamel" : {
-            "type" : "string"
           },
-          "CapitalCamel" : {
-            "type" : "string"
-          },
-          "small_Snake" : {
-            "type" : "string"
-          },
-          "Capital_Snake" : {
-            "type" : "string"
-          },
-          "SCA_ETH_Flow_Points" : {
-            "type" : "string"
-          },
-          "ATT_NAME" : {
-            "type" : "string",
-            "description" : "Name of the pet\n"
-          }
-        }
-      },
-      "MixedPropertiesAndAdditionalPropertiesClass" : {
-        "type" : "object",
-        "properties" : {
-          "uuid" : {
-            "type" : "string",
-            "format" : "uuid"
-          },
-          "dateTime" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "map" : {
-            "type" : "object",
-            "additionalProperties" : {
-              "$ref" : "#/components/schemas/Animal"
+          "tags" : {
+            "type" : "array",
+            "xml" : {
+              "name" : "tag",
+              "wrapped" : true
+            },
+            "items" : {
+              "$ref" : "#/components/schemas/Tag"
             }
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "pet status in the store",
+            "enum" : [ "available", "pending", "sold" ]
           }
+        },
+        "xml" : {
+          "name" : "Pet"
         }
       },
       "ApiResponse" : {
@@ -1466,164 +1525,6 @@
           },
           "message" : {
             "type" : "string"
-          }
-        }
-      },
-      "Name" : {
-        "required" : [ "name" ],
-        "type" : "object",
-        "properties" : {
-          "name" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "snake_case" : {
-            "type" : "integer",
-            "format" : "int32",
-            "readOnly" : true
-          },
-          "property" : {
-            "type" : "string"
-          },
-          "123Number" : {
-            "type" : "integer",
-            "readOnly" : true
-          }
-        },
-        "description" : "Model for testing model name same as property name",
-        "xml" : {
-          "name" : "Name"
-        }
-      },
-      "EnumClass" : {
-        "type" : "string",
-        "default" : "-efg",
-        "enum" : [ "_abc", "-efg", "(xyz)" ]
-      },
-      "List" : {
-        "type" : "object",
-        "properties" : {
-          "123-list" : {
-            "type" : "string"
-          }
-        }
-      },
-      "NumberOnly" : {
-        "type" : "object",
-        "properties" : {
-          "JustNumber" : {
-            "type" : "number"
-          }
-        }
-      },
-      "200_response" : {
-        "type" : "object",
-        "properties" : {
-          "name" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "class" : {
-            "type" : "string"
-          }
-        },
-        "description" : "Model for testing model name starting with number",
-        "xml" : {
-          "name" : "Name"
-        }
-      },
-      "Client" : {
-        "type" : "object",
-        "properties" : {
-          "client" : {
-            "type" : "string"
-          }
-        }
-      },
-      "Dog" : {
-        "allOf" : [ {
-          "$ref" : "#/components/schemas/Animal"
-        }, {
-          "type" : "object",
-          "properties" : {
-            "breed" : {
-              "type" : "string"
-            }
-          }
-        } ]
-      },
-      "Enum_Test" : {
-        "type" : "object",
-        "properties" : {
-          "enum_string" : {
-            "type" : "string",
-            "enum" : [ "UPPER", "lower", "" ]
-          },
-          "enum_integer" : {
-            "type" : "integer",
-            "format" : "int32",
-            "enum" : [ 1, -1 ]
-          },
-          "enum_number" : {
-            "type" : "number",
-            "format" : "double",
-            "enum" : [ 1.1, -1.2 ]
-          },
-          "outerEnum" : {
-            "$ref" : "#/components/schemas/OuterEnum"
-          }
-        }
-      },
-      "Order" : {
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "petId" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "quantity" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "shipDate" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "status" : {
-            "type" : "string",
-            "description" : "Order Status",
-            "enum" : [ "placed", "approved", "delivered" ]
-          },
-          "complete" : {
-            "type" : "boolean",
-            "default" : false
-          }
-        },
-        "xml" : {
-          "name" : "Order"
-        }
-      },
-      "AdditionalPropertiesClass" : {
-        "type" : "object",
-        "properties" : {
-          "map_property" : {
-            "type" : "object",
-            "additionalProperties" : {
-              "type" : "string"
-            }
-          },
-          "map_of_map_property" : {
-            "type" : "object",
-            "additionalProperties" : {
-              "type" : "object",
-              "additionalProperties" : {
-                "type" : "string"
-              }
-            }
           }
         }
       },
@@ -1652,78 +1553,101 @@
           "name" : "Return"
         }
       },
-      "ReadOnlyFirst" : {
+      "Name" : {
+        "required" : [ "name" ],
         "type" : "object",
         "properties" : {
-          "bar" : {
-            "type" : "string",
+          "name" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "snake_case" : {
+            "type" : "integer",
+            "format" : "int32",
             "readOnly" : true
           },
-          "baz" : {
+          "property" : {
+            "type" : "string"
+          },
+          "123Number" : {
+            "type" : "integer",
+            "readOnly" : true
+          }
+        },
+        "description" : "Model for testing model name same as property name",
+        "xml" : {
+          "name" : "Name"
+        }
+      },
+      "200_response" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "class" : {
             "type" : "string"
           }
+        },
+        "description" : "Model for testing model name starting with number",
+        "xml" : {
+          "name" : "Name"
         }
       },
-      "ArrayOfArrayOfNumberOnly" : {
+      "ClassModel" : {
         "type" : "object",
         "properties" : {
-          "ArrayArrayNumber" : {
-            "type" : "array",
-            "items" : {
-              "type" : "array",
-              "items" : {
-                "type" : "number"
-              }
-            }
+          "_class" : {
+            "type" : "string"
           }
-        }
+        },
+        "description" : "Model for testing model with \"_class\" property"
       },
-      "OuterEnum" : {
-        "type" : "string",
-        "enum" : [ "placed", "approved", "delivered" ]
-      },
-      "ArrayTest" : {
-        "type" : "object",
-        "properties" : {
-          "array_of_string" : {
-            "type" : "array",
-            "items" : {
+      "Dog" : {
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/Animal"
+        }, {
+          "type" : "object",
+          "properties" : {
+            "breed" : {
               "type" : "string"
             }
-          },
-          "array_array_of_integer" : {
-            "type" : "array",
-            "items" : {
-              "type" : "array",
-              "items" : {
-                "type" : "integer",
-                "format" : "int64"
-              }
-            }
-          },
-          "array_array_of_model" : {
-            "type" : "array",
-            "items" : {
-              "type" : "array",
-              "items" : {
-                "$ref" : "#/components/schemas/ReadOnlyFirst"
-              }
+          }
+        } ]
+      },
+      "Cat" : {
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/Animal"
+        }, {
+          "type" : "object",
+          "properties" : {
+            "declawed" : {
+              "type" : "boolean"
             }
           }
-        }
+        } ]
       },
-      "OuterComposite" : {
+      "Animal" : {
+        "required" : [ "className" ],
         "type" : "object",
         "properties" : {
-          "my_number" : {
-            "$ref" : "#/components/schemas/OuterNumber"
+          "className" : {
+            "type" : "string"
           },
-          "my_string" : {
-            "$ref" : "#/components/schemas/OuterString"
-          },
-          "my_boolean" : {
-            "$ref" : "#/components/schemas/OuterBoolean"
+          "color" : {
+            "type" : "string",
+            "default" : "red"
           }
+        },
+        "discriminator" : {
+          "propertyName" : "className"
+        }
+      },
+      "AnimalFarm" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/Animal"
         }
       },
       "format_test" : {
@@ -1795,64 +1719,136 @@
           }
         }
       },
-      "EnumArrays" : {
+      "EnumClass" : {
+        "type" : "string",
+        "enum" : [ "_abc", "-efg", "(xyz)" ],
+        "default" : "-efg"
+      },
+      "Enum_Test" : {
         "type" : "object",
         "properties" : {
-          "just_symbol" : {
+          "enum_string" : {
             "type" : "string",
-            "enum" : [ ">=", "$" ]
+            "enum" : [ "UPPER", "lower", "" ]
           },
-          "array_enum" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "enum" : [ "fish", "crab" ]
+          "enum_integer" : {
+            "type" : "integer",
+            "format" : "int32",
+            "enum" : [ 1, -1 ]
+          },
+          "enum_number" : {
+            "type" : "number",
+            "format" : "double",
+            "enum" : [ 1.1, -1.2 ]
+          },
+          "outerEnum" : {
+            "$ref" : "#/components/schemas/OuterEnum"
+          }
+        }
+      },
+      "AdditionalPropertiesClass" : {
+        "type" : "object",
+        "properties" : {
+          "map_property" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "string"
+            }
+          },
+          "map_of_map_property" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "object",
+              "additionalProperties" : {
+                "type" : "string"
+              }
             }
           }
         }
       },
-      "OuterString" : {
-        "type" : "string"
-      },
-      "ClassModel" : {
+      "MixedPropertiesAndAdditionalPropertiesClass" : {
         "type" : "object",
         "properties" : {
-          "_class" : {
-            "type" : "string"
-          }
-        },
-        "description" : "Model for testing model with \"_class\" property"
-      },
-      "OuterBoolean" : {
-        "type" : "boolean"
-      },
-      "Animal" : {
-        "required" : [ "className" ],
-        "type" : "object",
-        "properties" : {
-          "className" : {
-            "type" : "string"
-          },
-          "color" : {
+          "uuid" : {
             "type" : "string",
-            "default" : "red"
-          }
-        },
-        "discriminator" : {
-          "propertyName" : "className"
-        }
-      },
-      "Cat" : {
-        "allOf" : [ {
-          "$ref" : "#/components/schemas/Animal"
-        }, {
-          "type" : "object",
-          "properties" : {
-            "declawed" : {
-              "type" : "boolean"
+            "format" : "uuid"
+          },
+          "dateTime" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "map" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "$ref" : "#/components/schemas/Animal"
             }
           }
-        } ]
+        }
+      },
+      "List" : {
+        "type" : "object",
+        "properties" : {
+          "123-list" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Client" : {
+        "type" : "object",
+        "properties" : {
+          "client" : {
+            "type" : "string"
+          }
+        }
+      },
+      "ReadOnlyFirst" : {
+        "type" : "object",
+        "properties" : {
+          "bar" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "baz" : {
+            "type" : "string"
+          }
+        }
+      },
+      "hasOnlyReadOnly" : {
+        "type" : "object",
+        "properties" : {
+          "bar" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "foo" : {
+            "type" : "string",
+            "readOnly" : true
+          }
+        }
+      },
+      "Capitalization" : {
+        "type" : "object",
+        "properties" : {
+          "smallCamel" : {
+            "type" : "string"
+          },
+          "CapitalCamel" : {
+            "type" : "string"
+          },
+          "small_Snake" : {
+            "type" : "string"
+          },
+          "Capital_Snake" : {
+            "type" : "string"
+          },
+          "SCA_ETH_Flow_Points" : {
+            "type" : "string"
+          },
+          "ATT_NAME" : {
+            "type" : "string",
+            "description" : "Name of the pet\n"
+          }
+        }
       },
       "MapTest" : {
         "type" : "object",
@@ -1875,85 +1871,111 @@
           }
         }
       },
-      "Tag" : {
+      "ArrayTest" : {
         "type" : "object",
         "properties" : {
-          "id" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "name" : {
-            "type" : "string"
-          }
-        },
-        "xml" : {
-          "name" : "Tag"
-        }
-      },
-      "AnimalFarm" : {
-        "type" : "array",
-        "items" : {
-          "$ref" : "#/components/schemas/Animal"
-        }
-      },
-      "Pet" : {
-        "required" : [ "name", "photoUrls" ],
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "integer",
-            "format" : "int64",
-            "x-is-unique" : true
-          },
-          "category" : {
-            "$ref" : "#/components/schemas/Category"
-          },
-          "name" : {
-            "type" : "string",
-            "example" : "doggie"
-          },
-          "photoUrls" : {
+          "array_of_string" : {
             "type" : "array",
-            "xml" : {
-              "name" : "photoUrl",
-              "wrapped" : true
-            },
             "items" : {
               "type" : "string"
             }
           },
-          "tags" : {
+          "array_array_of_integer" : {
             "type" : "array",
-            "xml" : {
-              "name" : "tag",
-              "wrapped" : true
-            },
             "items" : {
-              "$ref" : "#/components/schemas/Tag"
+              "type" : "array",
+              "items" : {
+                "type" : "integer",
+                "format" : "int64"
+              }
             }
           },
-          "status" : {
-            "type" : "string",
-            "description" : "pet status in the store",
-            "enum" : [ "available", "pending", "sold" ]
+          "array_array_of_model" : {
+            "type" : "array",
+            "items" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/components/schemas/ReadOnlyFirst"
+              }
+            }
           }
-        },
-        "xml" : {
-          "name" : "Pet"
         }
       },
-      "hasOnlyReadOnly" : {
+      "NumberOnly" : {
         "type" : "object",
         "properties" : {
-          "bar" : {
-            "type" : "string",
-            "readOnly" : true
-          },
-          "foo" : {
-            "type" : "string",
-            "readOnly" : true
+          "JustNumber" : {
+            "type" : "number"
           }
         }
+      },
+      "ArrayOfNumberOnly" : {
+        "type" : "object",
+        "properties" : {
+          "ArrayNumber" : {
+            "type" : "array",
+            "items" : {
+              "type" : "number"
+            }
+          }
+        }
+      },
+      "ArrayOfArrayOfNumberOnly" : {
+        "type" : "object",
+        "properties" : {
+          "ArrayArrayNumber" : {
+            "type" : "array",
+            "items" : {
+              "type" : "array",
+              "items" : {
+                "type" : "number"
+              }
+            }
+          }
+        }
+      },
+      "EnumArrays" : {
+        "type" : "object",
+        "properties" : {
+          "just_symbol" : {
+            "type" : "string",
+            "enum" : [ ">=", "$" ]
+          },
+          "array_enum" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "enum" : [ "fish", "crab" ]
+            }
+          }
+        }
+      },
+      "OuterEnum" : {
+        "type" : "string",
+        "enum" : [ "placed", "approved", "delivered" ]
+      },
+      "OuterComposite" : {
+        "type" : "object",
+        "properties" : {
+          "my_number" : {
+            "$ref" : "#/components/schemas/OuterNumber"
+          },
+          "my_string" : {
+            "$ref" : "#/components/schemas/OuterString"
+          },
+          "my_boolean" : {
+            "$ref" : "#/components/schemas/OuterBoolean"
+          }
+        }
+      },
+      "OuterNumber" : {
+        "type" : "number"
+      },
+      "OuterString" : {
+        "type" : "string"
+      },
+      "OuterBoolean" : {
+        "type" : "boolean"
       }
     },
     "securitySchemes" : {
@@ -1969,10 +1991,6 @@
           }
         }
       },
-      "http_basic_test" : {
-        "type" : "http",
-        "scheme" : "basic"
-      },
       "api_key" : {
         "type" : "apiKey",
         "name" : "api_key",
@@ -1982,6 +2000,10 @@
         "type" : "apiKey",
         "name" : "api_key_query",
         "in" : "query"
+      },
+      "http_basic_test" : {
+        "type" : "http",
+        "scheme" : "basic"
       }
     }
   }

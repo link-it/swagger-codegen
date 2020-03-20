@@ -3,6 +3,10 @@ package io.swagger.client.api;
 import io.swagger.client.ApiClient;
 
 import java.math.BigDecimal;
+import io.swagger.client.model.Body2;
+import io.swagger.client.model.Body3;
+import io.swagger.client.model.Body4;
+import io.swagger.client.model.Body5;
 import io.swagger.client.model.Client;
 import io.swagger.client.model.OuterComposite;
 
@@ -62,9 +66,13 @@ public class FakeApi {
         final HttpHeaders headerParams = new HttpHeaders();
         final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
 
-        final String[] accepts = {  };
+        final String[] accepts = { 
+            "*/*"
+         };
         final List<MediaType> accept = apiClient.selectHeaderAccept(accepts);
-        final String[] contentTypes = {  };
+        final String[] contentTypes = { 
+            "*/*"
+         };
         final MediaType contentType = apiClient.selectHeaderContentType(contentTypes);
 
         String[] authNames = new String[] {  };
@@ -88,9 +96,13 @@ public class FakeApi {
         final HttpHeaders headerParams = new HttpHeaders();
         final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
 
-        final String[] accepts = {  };
+        final String[] accepts = { 
+            "*/*"
+         };
         final List<MediaType> accept = apiClient.selectHeaderAccept(accepts);
-        final String[] contentTypes = {  };
+        final String[] contentTypes = { 
+            "*/*"
+         };
         final MediaType contentType = apiClient.selectHeaderContentType(contentTypes);
 
         String[] authNames = new String[] {  };
@@ -114,9 +126,13 @@ public class FakeApi {
         final HttpHeaders headerParams = new HttpHeaders();
         final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
 
-        final String[] accepts = {  };
+        final String[] accepts = { 
+            "*/*"
+         };
         final List<MediaType> accept = apiClient.selectHeaderAccept(accepts);
-        final String[] contentTypes = {  };
+        final String[] contentTypes = { 
+            "*/*"
+         };
         final MediaType contentType = apiClient.selectHeaderContentType(contentTypes);
 
         String[] authNames = new String[] {  };
@@ -140,9 +156,13 @@ public class FakeApi {
         final HttpHeaders headerParams = new HttpHeaders();
         final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
 
-        final String[] accepts = {  };
+        final String[] accepts = { 
+            "*/*"
+         };
         final List<MediaType> accept = apiClient.selectHeaderAccept(accepts);
-        final String[] contentTypes = {  };
+        final String[] contentTypes = { 
+            "*/*"
+         };
         final MediaType contentType = apiClient.selectHeaderContentType(contentTypes);
 
         String[] authNames = new String[] {  };
@@ -170,9 +190,13 @@ public class FakeApi {
         final HttpHeaders headerParams = new HttpHeaders();
         final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
 
-        final String[] accepts = {  };
+        final String[] accepts = { 
+            "application/json"
+         };
         final List<MediaType> accept = apiClient.selectHeaderAccept(accepts);
-        final String[] contentTypes = {  };
+        final String[] contentTypes = { 
+            "application/json"
+         };
         final MediaType contentType = apiClient.selectHeaderContentType(contentTypes);
 
         String[] authNames = new String[] {  };
@@ -188,7 +212,7 @@ public class FakeApi {
      * @param body The body parameter
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
-    public void testEndpointParameters(Object body) throws RestClientException {
+    public void testEndpointParameters(Body2 body) throws RestClientException {
         Object postBody = body;
         // verify the required parameter 'body' is set
         if (body == null) {
@@ -202,7 +226,9 @@ public class FakeApi {
 
         final String[] accepts = {  };
         final List<MediaType> accept = apiClient.selectHeaderAccept(accepts);
-        final String[] contentTypes = {  };
+        final String[] contentTypes = { 
+            "application/xml; charset&#x3D;utf-8", "application/json; charset&#x3D;utf-8"
+         };
         final MediaType contentType = apiClient.selectHeaderContentType(contentTypes);
 
         String[] authNames = new String[] { "http_basic_test" };
@@ -215,7 +241,6 @@ public class FakeApi {
      * To test enum parameters
      * <p><b>400</b> - Invalid request
      * <p><b>404</b> - Not found
-     * @param body The body parameter
      * @param enumHeaderStringArray Header parameter enum test (string array)
      * @param enumHeaderString Header parameter enum test (string)
      * @param enumQueryStringArray Query parameter enum test (string array)
@@ -223,14 +248,14 @@ public class FakeApi {
      * @param enumQueryInteger Query parameter enum test (double)
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
-    public void testEnumParameters(Object body, List<String> enumHeaderStringArray, String enumHeaderString, List<String> enumQueryStringArray, String enumQueryString, Integer enumQueryInteger) throws RestClientException {
-        Object postBody = body;
+    public void testEnumParameters(List<String> enumHeaderStringArray, String enumHeaderString, List<String> enumQueryStringArray, String enumQueryString, Integer enumQueryInteger) throws RestClientException {
+        Object postBody = null;
         String path = UriComponentsBuilder.fromPath("/fake").build().toUriString();
         
         final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
         final HttpHeaders headerParams = new HttpHeaders();
         final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
-        queryParams.putAll(apiClient.parameterToMultiValueMap(ApiClient.CollectionFormat.valueOf("multi".toUpperCase()), "enum_query_string_array", enumQueryStringArray));
+        queryParams.putAll(apiClient.parameterToMultiValueMap(ApiClient.CollectionFormat.valueOf("csv".toUpperCase()), "enum_query_string_array", enumQueryStringArray));
         queryParams.putAll(apiClient.parameterToMultiValueMap(null, "enum_query_string", enumQueryString));
         queryParams.putAll(apiClient.parameterToMultiValueMap(null, "enum_query_integer", enumQueryInteger));
         if (enumHeaderStringArray != null)
@@ -247,6 +272,34 @@ public class FakeApi {
 
         ParameterizedTypeReference<Void> returnType = new ParameterizedTypeReference<Void>() {};
         apiClient.invokeAPI(path, HttpMethod.GET, queryParams, postBody, headerParams, formParams, accept, contentType, authNames, returnType);
+    }
+    /**
+     * To test enum parameters
+     * To test enum parameters
+     * <p><b>400</b> - Invalid request
+     * <p><b>404</b> - Not found
+     * @param body The body parameter
+     * @throws RestClientException if an error occurs while attempting to invoke the API
+     */
+    public void testEnumRequestBody(Body4 body) throws RestClientException {
+        Object postBody = body;
+        String path = UriComponentsBuilder.fromPath("/fake/enum/form").build().toUriString();
+        
+        final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders headerParams = new HttpHeaders();
+        final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+
+        final String[] accepts = {  };
+        final List<MediaType> accept = apiClient.selectHeaderAccept(accepts);
+        final String[] contentTypes = { 
+            "*/*"
+         };
+        final MediaType contentType = apiClient.selectHeaderContentType(contentTypes);
+
+        String[] authNames = new String[] {  };
+
+        ParameterizedTypeReference<Void> returnType = new ParameterizedTypeReference<Void>() {};
+        apiClient.invokeAPI(path, HttpMethod.POST, queryParams, postBody, headerParams, formParams, accept, contentType, authNames, returnType);
     }
     /**
      * test inline additionalProperties
@@ -269,7 +322,9 @@ public class FakeApi {
 
         final String[] accepts = {  };
         final List<MediaType> accept = apiClient.selectHeaderAccept(accepts);
-        final String[] contentTypes = {  };
+        final String[] contentTypes = { 
+            "application/json"
+         };
         final MediaType contentType = apiClient.selectHeaderContentType(contentTypes);
 
         String[] authNames = new String[] {  };
@@ -284,7 +339,7 @@ public class FakeApi {
      * @param body The body parameter
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
-    public void testJsonFormData(Object body) throws RestClientException {
+    public void testJsonFormData(Body5 body) throws RestClientException {
         Object postBody = body;
         // verify the required parameter 'body' is set
         if (body == null) {
@@ -298,12 +353,14 @@ public class FakeApi {
 
         final String[] accepts = {  };
         final List<MediaType> accept = apiClient.selectHeaderAccept(accepts);
-        final String[] contentTypes = {  };
+        final String[] contentTypes = { 
+            "application/json"
+         };
         final MediaType contentType = apiClient.selectHeaderContentType(contentTypes);
 
         String[] authNames = new String[] {  };
 
         ParameterizedTypeReference<Void> returnType = new ParameterizedTypeReference<Void>() {};
-        apiClient.invokeAPI(path, HttpMethod.GET, queryParams, postBody, headerParams, formParams, accept, contentType, authNames, returnType);
+        apiClient.invokeAPI(path, HttpMethod.POST, queryParams, postBody, headerParams, formParams, accept, contentType, authNames, returnType);
     }
 }

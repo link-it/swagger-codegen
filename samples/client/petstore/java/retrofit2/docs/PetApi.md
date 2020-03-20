@@ -8,7 +8,9 @@ Method | HTTP request | Description
 [**deletePet**](PetApi.md#deletePet) | **DELETE** pet/{petId} | Deletes a pet
 [**findPetsByStatus**](PetApi.md#findPetsByStatus) | **GET** pet/findByStatus | Finds Pets by status
 [**findPetsByTags**](PetApi.md#findPetsByTags) | **GET** pet/findByTags | Finds Pets by tags
+[**getAllPets**](PetApi.md#getAllPets) | **GET** allPets | 
 [**getPetById**](PetApi.md#getPetById) | **GET** pet/{petId} | Find pet by ID
+[**getRandomPet**](PetApi.md#getRandomPet) | **GET** randomPet | 
 [**updatePet**](PetApi.md#updatePet) | **PUT** pet | Update an existing pet
 [**updatePetWithForm**](PetApi.md#updatePetWithForm) | **POST** pet/{petId} | Updates a pet in the store with form data
 [**uploadFile**](PetApi.md#uploadFile) | **POST** pet/{petId}/uploadImage | uploads an image
@@ -86,7 +88,7 @@ OAuth petstore_auth = (OAuth) defaultClient.getAuthentication("petstore_auth");
 petstore_auth.setAccessToken("YOUR ACCESS TOKEN");
 
 PetApi apiInstance = new PetApi();
-Integer petId = 56; // Integer | Pet id to delete
+Long petId = 789L; // Long | Pet id to delete
 String apiKey = "apiKey_example"; // String | 
 try {
     Void result = apiInstance.deletePet(petId, apiKey);
@@ -101,8 +103,8 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **petId** | [**Integer**](.md)| Pet id to delete |
- **apiKey** | [**String**](.md)|  | [optional]
+ **petId** | **Long**| Pet id to delete |
+ **apiKey** | **String**|  | [optional]
 
 ### Return type
 
@@ -223,6 +225,45 @@ Name | Type | Description  | Notes
  - **Content-Type**: Not defined
  - **Accept**: application/xml, application/json
 
+<a name="getAllPets"></a>
+# **getAllPets**
+> AllPetsResponse getAllPets()
+
+
+
+### Example
+```java
+// Import classes:
+//import io.swagger.client.ApiException;
+//import io.swagger.client.api.PetApi;
+
+
+PetApi apiInstance = new PetApi();
+try {
+    AllPetsResponse result = apiInstance.getAllPets();
+    System.out.println(result);
+} catch (ApiException e) {
+    System.err.println("Exception when calling PetApi#getAllPets");
+    e.printStackTrace();
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+[**AllPetsResponse**](AllPetsResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
 <a name="getPetById"></a>
 # **getPetById**
 > Pet getPetById(petId)
@@ -249,7 +290,7 @@ api_key.setApiKey("YOUR API KEY");
 //api_key.setApiKeyPrefix("Token");
 
 PetApi apiInstance = new PetApi();
-Integer petId = 56; // Integer | ID of pet to return
+Long petId = 789L; // Long | ID of pet to return
 try {
     Pet result = apiInstance.getPetById(petId);
     System.out.println(result);
@@ -263,7 +304,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **petId** | [**Integer**](.md)| ID of pet to return |
+ **petId** | **Long**| ID of pet to return |
 
 ### Return type
 
@@ -277,6 +318,45 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: Not defined
  - **Accept**: application/xml, application/json
+
+<a name="getRandomPet"></a>
+# **getRandomPet**
+> SinglePetResponse getRandomPet()
+
+
+
+### Example
+```java
+// Import classes:
+//import io.swagger.client.ApiException;
+//import io.swagger.client.api.PetApi;
+
+
+PetApi apiInstance = new PetApi();
+try {
+    SinglePetResponse result = apiInstance.getRandomPet();
+    System.out.println(result);
+} catch (ApiException e) {
+    System.err.println("Exception when calling PetApi#getRandomPet");
+    e.printStackTrace();
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+[**SinglePetResponse**](SinglePetResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
 
 <a name="updatePet"></a>
 # **updatePet**
@@ -351,7 +431,7 @@ OAuth petstore_auth = (OAuth) defaultClient.getAuthentication("petstore_auth");
 petstore_auth.setAccessToken("YOUR ACCESS TOKEN");
 
 PetApi apiInstance = new PetApi();
-Integer petId = 56; // Integer | ID of pet that needs to be updated
+Long petId = 789L; // Long | ID of pet that needs to be updated
 String name = "name_example"; // String | 
 String status = "status_example"; // String | 
 try {
@@ -367,9 +447,9 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **petId** | [**Integer**](.md)| ID of pet that needs to be updated |
- **name** | [**String**](.md)|  | [optional]
- **status** | [**String**](.md)|  | [optional]
+ **petId** | **Long**| ID of pet that needs to be updated |
+ **name** | **String**|  | [optional]
+ **status** | **String**|  | [optional]
 
 ### Return type
 
@@ -406,7 +486,7 @@ OAuth petstore_auth = (OAuth) defaultClient.getAuthentication("petstore_auth");
 petstore_auth.setAccessToken("YOUR ACCESS TOKEN");
 
 PetApi apiInstance = new PetApi();
-Integer petId = 56; // Integer | ID of pet to update
+Long petId = 789L; // Long | ID of pet to update
 String additionalMetadata = "additionalMetadata_example"; // String | 
 File file = new File("file_example"); // File | 
 try {
@@ -422,8 +502,8 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **petId** | [**Integer**](.md)| ID of pet to update |
- **additionalMetadata** | [**String**](.md)|  | [optional]
+ **petId** | **Long**| ID of pet to update |
+ **additionalMetadata** | **String**|  | [optional]
  **file** | **File**|  | [optional]
 
 ### Return type

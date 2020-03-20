@@ -9,9 +9,11 @@ import retrofit2.http.*;
 
 import okhttp3.RequestBody;
 
+import io.swagger.client.model.AllPetsResponse;
 import java.io.File;
 import io.swagger.client.model.ModelApiResponse;
 import io.swagger.client.model.Pet;
+import io.swagger.client.model.SinglePetResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +47,7 @@ public interface PetApi {
    */
   @DELETE("pet/{petId}")
   F.Promise<Response<Void>> deletePet(
-            @retrofit2.http.Path("petId") Integer petId            ,             @retrofit2.http.Header("api_key") String apiKey        
+            @retrofit2.http.Path("petId") Long petId            ,             @retrofit2.http.Header("api_key") String apiKey        
   );
 
   /**
@@ -56,7 +58,7 @@ public interface PetApi {
    */
   @GET("pet/findByStatus")
   F.Promise<Response<List<Pet>>> findPetsByStatus(
-        @retrofit2.http.Path("status") List<String> status                
+        @retrofit2.http.Query("status") List<String> status                
   );
 
   /**
@@ -67,8 +69,17 @@ public interface PetApi {
    */
   @GET("pet/findByTags")
   F.Promise<Response<List<Pet>>> findPetsByTags(
-        @retrofit2.http.Path("tags") List<String> tags                
+        @retrofit2.http.Query("tags") List<String> tags                
   );
+
+  /**
+   * 
+   * 
+   * @return Call&lt;AllPetsResponse&gt;
+   */
+  @GET("allPets")
+  F.Promise<Response<AllPetsResponse>> getAllPets();
+    
 
   /**
    * Find pet by ID
@@ -78,8 +89,17 @@ public interface PetApi {
    */
   @GET("pet/{petId}")
   F.Promise<Response<Pet>> getPetById(
-            @retrofit2.http.Path("petId") Integer petId            
+            @retrofit2.http.Path("petId") Long petId            
   );
+
+  /**
+   * 
+   * 
+   * @return Call&lt;SinglePetResponse&gt;
+   */
+  @GET("randomPet")
+  F.Promise<Response<SinglePetResponse>> getRandomPet();
+    
 
   /**
    * Update an existing pet
@@ -106,7 +126,7 @@ public interface PetApi {
   @retrofit2.http.FormUrlEncoded
   @POST("pet/{petId}")
   F.Promise<Response<Void>> updatePetWithForm(
-            @retrofit2.http.Path("petId") Integer petId            ,                     @retrofit2.http.Field("name") String name,                     @retrofit2.http.Field("status") String status
+            @retrofit2.http.Path("petId") Long petId            ,                     @retrofit2.http.Field("name") String name,                     @retrofit2.http.Field("status") String status
   );
 
   /**
@@ -120,7 +140,7 @@ public interface PetApi {
   @retrofit2.http.Multipart
   @POST("pet/{petId}/uploadImage")
   F.Promise<Response<ModelApiResponse>> uploadFile(
-            @retrofit2.http.Path("petId") Integer petId            ,                     @retrofit2.http.Part("additionalMetadata") String additionalMetadata,                     @retrofit2.http.Part okhttp3.MultipartBody.Part file
+            @retrofit2.http.Path("petId") Long petId            ,                     @retrofit2.http.Part("additionalMetadata") String additionalMetadata,                     @retrofit2.http.Part okhttp3.MultipartBody.Part file
   );
 
 }

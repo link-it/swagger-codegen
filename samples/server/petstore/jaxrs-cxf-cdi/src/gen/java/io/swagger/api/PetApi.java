@@ -67,7 +67,7 @@ public class PetApi  {
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "400", description = "Invalid pet value") })
     public Response deletePet(
-@Parameter(description = "Pet id to delete",required=true) @PathParam("petId") Integer petId
+@Parameter(description = "Pet id to delete",required=true) @PathParam("petId") Long petId
 , 
 @Parameter(description = "" )@HeaderParam("api_key") String apiKey
 ) {
@@ -118,7 +118,7 @@ public class PetApi  {
         @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
         @ApiResponse(responseCode = "404", description = "Pet not found") })
     public Response getPetById(
-@Parameter(description = "ID of pet to return",required=true) @PathParam("petId") Integer petId
+@Parameter(description = "ID of pet to return",required=true) @PathParam("petId") Long petId
 ) {
         return delegate.getPetById(petId, securityContext);
     }
@@ -150,7 +150,7 @@ public class PetApi  {
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "405", description = "Invalid input") })
     public Response updatePetWithForm(
-@Parameter(description = "ID of pet that needs to be updated",required=true) @PathParam("petId") Integer petId
+@Parameter(description = "ID of pet that needs to be updated",required=true) @PathParam("petId") Long petId
 , @Multipart(value = "name", required = false)  String name, @Multipart(value = "status", required = false)  String status) {
         return delegate.updatePetWithForm(petId, name, status, securityContext);
     }
@@ -165,7 +165,7 @@ public class PetApi  {
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = ModelApiResponse.class))) })
     public Response uploadFile(
-@Parameter(description = "ID of pet to update",required=true) @PathParam("petId") Integer petId
+@Parameter(description = "ID of pet to update",required=true) @PathParam("petId") Long petId
 , @Multipart(value = "additionalMetadata", required = false)  String additionalMetadata,  @Multipart(value = "file", required = false) InputStream fileInputStream, @Multipart(value = "file" , required = false) Attachment fileDetail) {
         return delegate.uploadFile(petId, additionalMetadata, fileInputStream, fileDetail, securityContext);
     }

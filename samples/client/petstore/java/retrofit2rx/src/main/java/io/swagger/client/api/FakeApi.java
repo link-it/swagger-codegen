@@ -9,11 +9,11 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 
 import java.math.BigDecimal;
-import io.swagger.client.model.Body2;
-import io.swagger.client.model.Body3;
-import io.swagger.client.model.Body4;
-import io.swagger.client.model.Body5;
 import io.swagger.client.model.Client;
+import io.swagger.client.model.EnumFormBody;
+import io.swagger.client.model.FakeBody;
+import io.swagger.client.model.FakeBody1;
+import io.swagger.client.model.FakeJsonFormDataBody;
 import io.swagger.client.model.OuterComposite;
 
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public interface FakeApi {
   })
   @POST("fake/outer/boolean")
   Observable<Boolean> fakeOuterBooleanSerialize(
-                    @retrofit2.http.Body Boolean body    
+    @retrofit2.http.Body Boolean body
   );
 
   /**
@@ -47,7 +47,7 @@ public interface FakeApi {
   })
   @POST("fake/outer/composite")
   Observable<OuterComposite> fakeOuterCompositeSerialize(
-                    @retrofit2.http.Body OuterComposite body    
+    @retrofit2.http.Body OuterComposite body
   );
 
   /**
@@ -61,7 +61,7 @@ public interface FakeApi {
   })
   @POST("fake/outer/number")
   Observable<BigDecimal> fakeOuterNumberSerialize(
-                    @retrofit2.http.Body BigDecimal body    
+    @retrofit2.http.Body BigDecimal body
   );
 
   /**
@@ -75,7 +75,7 @@ public interface FakeApi {
   })
   @POST("fake/outer/string")
   Observable<String> fakeOuterStringSerialize(
-                    @retrofit2.http.Body String body    
+    @retrofit2.http.Body String body
   );
 
   /**
@@ -89,7 +89,7 @@ public interface FakeApi {
   })
   @PATCH("fake")
   Observable<Client> testClientModel(
-                    @retrofit2.http.Body Client body    
+    @retrofit2.http.Body Client body
   );
 
   /**
@@ -103,22 +103,22 @@ public interface FakeApi {
   })
   @POST("fake")
   Observable<Void> testEndpointParameters(
-                    @retrofit2.http.Body Body2 body    
+    @retrofit2.http.Body FakeBody body
   );
 
   /**
    * To test enum parameters
    * To test enum parameters
    * @param enumHeaderStringArray Header parameter enum test (string array) (optional)
-   * @param enumHeaderString Header parameter enum test (string) (optional)
+   * @param enumHeaderString Header parameter enum test (string) (optional, default to -efg)
    * @param enumQueryStringArray Query parameter enum test (string array) (optional)
-   * @param enumQueryString Query parameter enum test (string) (optional)
+   * @param enumQueryString Query parameter enum test (string) (optional, default to -efg)
    * @param enumQueryInteger Query parameter enum test (double) (optional)
    * @return Call&lt;Void&gt;
    */
   @GET("fake")
   Observable<Void> testEnumParameters(
-                @retrofit2.http.Header("enum_header_string_array") List<String> enumHeaderStringArray        ,             @retrofit2.http.Header("enum_header_string") String enumHeaderString        ,     @retrofit2.http.Query("enum_query_string_array") List<String> enumQueryStringArray                ,     @retrofit2.http.Query("enum_query_string") String enumQueryString                ,     @retrofit2.http.Query("enum_query_integer") Integer enumQueryInteger                
+    @retrofit2.http.Header("enum_header_string_array") List<String> enumHeaderStringArray, @retrofit2.http.Header("enum_header_string") String enumHeaderString, @retrofit2.http.Query("enum_query_string_array") List<String> enumQueryStringArray, @retrofit2.http.Query("enum_query_string") String enumQueryString, @retrofit2.http.Query("enum_query_integer") Integer enumQueryInteger
   );
 
   /**
@@ -132,7 +132,7 @@ public interface FakeApi {
   })
   @POST("fake/enum/form")
   Observable<Void> testEnumRequestBody(
-                    @retrofit2.http.Body Body4 body    
+    @retrofit2.http.Body EnumFormBody body
   );
 
   /**
@@ -146,7 +146,7 @@ public interface FakeApi {
   })
   @POST("fake/inline-additionalProperties")
   Observable<Void> testInlineAdditionalProperties(
-                    @retrofit2.http.Body Map<String, String> body    
+    @retrofit2.http.Body Map<String, String> body
   );
 
   /**
@@ -160,7 +160,7 @@ public interface FakeApi {
   })
   @POST("fake/jsonFormData")
   Observable<Void> testJsonFormData(
-                    @retrofit2.http.Body Body5 body    
+    @retrofit2.http.Body FakeJsonFormDataBody body
   );
 
 }

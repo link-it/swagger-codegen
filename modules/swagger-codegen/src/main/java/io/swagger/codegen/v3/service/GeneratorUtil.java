@@ -10,7 +10,9 @@ import io.swagger.codegen.v3.CodegenArgument;
 import io.swagger.codegen.v3.config.CodegenConfigurator;
 import io.swagger.codegen.v3.service.exception.BadRequestException;
 import io.swagger.models.Swagger;
+import io.swagger.models.auth.UrlMatcher;
 import io.swagger.parser.SwaggerParser;
+import io.swagger.parser.util.ParseOptions;
 import io.swagger.v3.core.util.Json;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
@@ -41,25 +43,92 @@ public class GeneratorUtil {
         String lang = generationRequest.getLang();
         validateSpec(lang, inputSpec, inputSpecURL);
         LOGGER.debug("getClientOptInputV2 - spec validated");
+        io.swagger.models.auth.UrlMatcher urlMatcher = null;
+        if (!generationRequest.getOptions().getAllowedAuthHosts().isEmpty() || !generationRequest.getOptions().getDeniedAuthHosts().isEmpty()) {
+            urlMatcher = url -> {
+                String host = url.getHost();
+                // first check denies
+                for (HostAccessControl check: generationRequest.getOptions().getDeniedAuthHosts()) {
+                    if (check.isRegex()) {
+                        if (host.matches(check.getHost())) {
+                            return false;
+                        }
+                    } else if (check.isEndsWith()){
+                        if (host.toLowerCase().endsWith(check.getHost().toLowerCase())){
+                            return false;
+                        }
+                    } else {
+                        if (host.equalsIgnoreCase(check.getHost())) {
+                            return false;
+                        }
+                    }
+                }
+                // then allows
+                for (HostAccessControl check: generationRequest.getOptions().getAllowedAuthHosts()) {
+                    if (check.isRegex()) {
+                        if (!host.matches(check.getHost())) {
+                            return false;
+                        }
+                    } else if (check.isEndsWith()){
+                        if (!host.toLowerCase().endsWith(check.getHost().toLowerCase())){
+                            return false;
+                        }
+                    } else {
+                        if (!host.equalsIgnoreCase(check.getHost())) {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            };
+        }
+
         final List<io.swagger.models.auth.AuthorizationValue> authorizationValues = io.swagger.codegen.auth.AuthParser.parse(generationRequest.getOptions().getAuth());
+        if (!authorizationValues.isEmpty() && urlMatcher != null) {
+            for (io.swagger.models.auth.AuthorizationValue authVal: authorizationValues) {
+                if (authVal.getUrlMatcher() == null) {
+                    authVal.setUrlMatcher(urlMatcher);
+                }
+            }
+        }
         if (generationRequest.getOptions().getAuthorizationValue() != null) {
             io.swagger.models.auth.AuthorizationValue authorizationValue = new io.swagger.models.auth.AuthorizationValue()
                     .value(generationRequest.getOptions().getAuthorizationValue().getValue())
                     .keyName(generationRequest.getOptions().getAuthorizationValue().getKeyName())
                     .type(generationRequest.getOptions().getAuthorizationValue().getType());
+            UrlMatcher predicateUrlMatcher = null;
+            if (generationRequest.getOptions().getAuthorizationValue().getUrlMatcher() != null) {
+                predicateUrlMatcher = url -> generationRequest.getOptions().getAuthorizationValue().getUrlMatcher().test(url);
+            }
+            if (predicateUrlMatcher != null) {
+                authorizationValue.setUrlMatcher(predicateUrlMatcher);
+            } else if (urlMatcher != null) {
+                authorizationValue.setUrlMatcher(urlMatcher);
+            }
             authorizationValues.add(authorizationValue);
         }
         LOGGER.debug("getClientOptInputV2 - processed auth");
 
+        CodegenConfig codegenConfig=null;
+        try {
+            codegenConfig = CodegenConfigLoader.forName(lang);
+        } catch(RuntimeException e) {
+            throw new BadRequestException("Unsupported target " + lang + " supplied");
+        }
+        ParseOptions parseOptions = new ParseOptions();
+        parseOptions.setResolve(true);
+        if (codegenConfig.isUsingFlattenSpec() && !Boolean.FALSE.equals(generationRequest.getOptions().isUsingFlattenSpecForV2())) {
+            parseOptions.setFlatten(true);
+        }
         Swagger swagger;
         if (StringUtils.isBlank(inputSpec)) {
             if (inputSpecURL != null) {
                 if (!authorizationValues.isEmpty()) {
                     swagger =
                             new SwaggerParser().read(inputSpecURL, authorizationValues,
-                                    true);
+                                    parseOptions);
                 } else {
-                    swagger = new SwaggerParser().read(inputSpecURL);
+                    swagger = new SwaggerParser().read(inputSpecURL, null, parseOptions);
                 }
             } else {
                 throw new BadRequestException("No swagger specification was supplied");
@@ -69,9 +138,9 @@ public class GeneratorUtil {
             try {
                 JsonNode node = io.swagger.util.Json.mapper().readTree(inputSpec);
                 if (!authorizationValues.isEmpty()) {
-                    swagger = new SwaggerParser().read(node, authorizationValues, true);
+                    swagger = new SwaggerParser().read(node, authorizationValues, parseOptions);
                 } else {
-                    swagger = new SwaggerParser().read(node, true);
+                    swagger = new SwaggerParser().read(node, null,parseOptions);
                 }
             } catch (Exception e) {
                 LOGGER.error("Exception parsing input spec", e);
@@ -87,12 +156,6 @@ public class GeneratorUtil {
         io.swagger.codegen.ClientOptInput clientOptInput = new io.swagger.codegen.ClientOptInput();
         ClientOpts clientOpts = new ClientOpts();
 
-        CodegenConfig codegenConfig=null;
-        try {
-            codegenConfig = CodegenConfigLoader.forName(lang);
-        } catch(RuntimeException e) {
-            throw new BadRequestException("Unsupported target " + lang + " supplied");
-        }
         codegenConfig.setOutputDir(generationRequest.getOptions().getOutputDir());
         codegenConfig.setInputSpec(inputSpec);
         if (isNotEmpty(options.getApiPackage())) {
@@ -127,6 +190,9 @@ public class GeneratorUtil {
         }
         if (isNotEmpty(options.getGitRepoId())) {
             codegenConfig.additionalProperties().put(CodegenConstants.GIT_REPO_ID, options.getGitRepoId());
+        }
+        if (isNotEmpty(options.getGitRepoBaseURL())) {
+            codegenConfig.additionalProperties().put(CodegenConstants.GIT_REPO_BASE_URL, options.getGitRepoBaseURL());
         }
         if (isNotEmpty(options.getReleaseNote())) {
             codegenConfig.additionalProperties().put(CodegenConstants.RELEASE_NOTE, options.getReleaseNote());
@@ -197,6 +263,8 @@ public class GeneratorUtil {
         configurator.setInputSpec(inputSpec);
         configurator.setInputSpecURL(inputSpecURL);
 
+        configurator.setFlattenInlineSchema(generationRequest.getOptions().isFlattenInlineComposedSchemas());
+
         if (isNotEmpty(lang)) {
             configurator.setLang(lang);
             readCodegenArguments(configurator, options);
@@ -231,6 +299,9 @@ public class GeneratorUtil {
         if (options.getSkipOverride() != null) {
             configurator.setSkipOverwrite(options.getSkipOverride());
         }
+        if (options.getResolveFully() != null) {
+            configurator.setResolveFully(options.getResolveFully());
+        }
         if (isNotEmpty(options.getArtifactVersion())) {
             configurator.setArtifactVersion(options.getArtifactVersion());
         }
@@ -242,6 +313,9 @@ public class GeneratorUtil {
         }
         if (isNotEmpty(options.getGitRepoId())) {
             configurator.setGitRepoId(options.getGitRepoId());
+        }
+        if (isNotEmpty(options.getGitRepoBaseURL())) {
+            configurator.setGitRepoBaseURL(options.getGitRepoBaseURL());
         }
         if (isNotEmpty(options.getReleaseNote())) {
             configurator.setReleaseNote(options.getReleaseNote());
@@ -285,6 +359,9 @@ public class GeneratorUtil {
                 configurator.addAdditionalReservedWordMapping(entry.getKey(), entry.getValue());
             }
         }
+
+        configurator.setAllowedAuthHosts(options.getAllowedAuthHosts());
+        configurator.setDeniedAuthHosts(options.getDeniedAuthHosts());
         LOGGER.debug("getClientOptInput - end");
         return configurator.toClientOptInput();
     }

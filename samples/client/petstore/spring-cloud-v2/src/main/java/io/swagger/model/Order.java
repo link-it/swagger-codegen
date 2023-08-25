@@ -12,10 +12,11 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * An order for a pets from the pet store
+ * Order
  */
-@ApiModel(description = "An order for a pets from the pet store")
 @Validated
+
+
 public class Order   {
   @JsonProperty("id")
   private Long id = null;
@@ -75,7 +76,7 @@ public class Order   {
   /**
    * Get id
    * @return id
-  **/
+   **/
   @ApiModelProperty(value = "")
   
     public Long getId() {
@@ -94,7 +95,7 @@ public class Order   {
   /**
    * Get petId
    * @return petId
-  **/
+   **/
   @ApiModelProperty(value = "")
   
     public Long getPetId() {
@@ -113,7 +114,7 @@ public class Order   {
   /**
    * Get quantity
    * @return quantity
-  **/
+   **/
   @ApiModelProperty(value = "")
   
     public Integer getQuantity() {
@@ -132,7 +133,7 @@ public class Order   {
   /**
    * Get shipDate
    * @return shipDate
-  **/
+   **/
   @ApiModelProperty(value = "")
   
     @Valid
@@ -152,7 +153,7 @@ public class Order   {
   /**
    * Order Status
    * @return status
-  **/
+   **/
   @ApiModelProperty(value = "Order Status")
   
     public StatusEnum getStatus() {
@@ -171,7 +172,7 @@ public class Order   {
   /**
    * Get complete
    * @return complete
-  **/
+   **/
   @ApiModelProperty(value = "")
   
     public Boolean isComplete() {

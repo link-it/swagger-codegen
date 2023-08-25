@@ -21,7 +21,7 @@ import javax.validation.Valid;
 
 @Path("/another-fake")
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJAXRSSpecServerCodegen", date = "2019-10-08T21:26:16.639+02:00[Europe/Rome]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJAXRSSpecServerCodegen", date = "2022-07-18T07:27:31.515-05:00[America/Bogota]")
 public interface AnotherFakeApi {
 
     @PATCH
@@ -30,5 +30,5 @@ public interface AnotherFakeApi {
     @Produces({ "application/json" })
     @Operation(summary = "To test special tags", description = "To test special tags", tags={ "$another-fake?" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = Client.class))) })
+        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Client.class))) })
     Client testSpecialTags(@Valid Client body);}

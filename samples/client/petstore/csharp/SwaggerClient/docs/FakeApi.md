@@ -17,7 +17,7 @@ Method | HTTP request | Description
 
 <a name="fakeouterbooleanserialize"></a>
 # **FakeOuterBooleanSerialize**
-> OuterBoolean FakeOuterBooleanSerialize (bool? body = null)
+> bool? FakeOuterBooleanSerialize (bool? body = null)
 
 
 
@@ -42,7 +42,7 @@ namespace Example
 
             try
             {
-                OuterBoolean result = apiInstance.FakeOuterBooleanSerialize(body);
+                bool? result = apiInstance.FakeOuterBooleanSerialize(body);
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -62,7 +62,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**OuterBoolean**](OuterBoolean.md)
+**bool?**
 
 ### Authorization
 
@@ -135,7 +135,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 <a name="fakeouternumberserialize"></a>
 # **FakeOuterNumberSerialize**
-> OuterNumber FakeOuterNumberSerialize (decimal? body = null)
+> decimal? FakeOuterNumberSerialize (decimal? body = null)
 
 
 
@@ -160,7 +160,7 @@ namespace Example
 
             try
             {
-                OuterNumber result = apiInstance.FakeOuterNumberSerialize(body);
+                decimal? result = apiInstance.FakeOuterNumberSerialize(body);
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -180,7 +180,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**OuterNumber**](OuterNumber.md)
+[**decimal?**](BigDecimal.md)
 
 ### Authorization
 
@@ -194,7 +194,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 <a name="fakeouterstringserialize"></a>
 # **FakeOuterStringSerialize**
-> OuterString FakeOuterStringSerialize (string body = null)
+> string FakeOuterStringSerialize (string body = null)
 
 
 
@@ -219,7 +219,7 @@ namespace Example
 
             try
             {
-                OuterString result = apiInstance.FakeOuterStringSerialize(body);
+                string result = apiInstance.FakeOuterStringSerialize(body);
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -239,7 +239,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**OuterString**](OuterString.md)
+**string**
 
 ### Authorization
 
@@ -253,7 +253,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 <a name="testclientmodel"></a>
 # **TestClientModel**
-> ClientModel TestClientModel (ClientModel body)
+> ModelClient TestClientModel (ModelClient body)
 
 To test \"client\" model
 
@@ -274,12 +274,12 @@ namespace Example
         public void main()
         {
             var apiInstance = new FakeApi();
-            var body = new ClientModel(); // ClientModel | client model
+            var body = new ModelClient(); // ModelClient | client model
 
             try
             {
                 // To test \"client\" model
-                ClientModel result = apiInstance.TestClientModel(body);
+                ModelClient result = apiInstance.TestClientModel(body);
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -295,11 +295,11 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**ClientModel**](ClientModel.md)| client model | 
+ **body** | [**ModelClient**](ModelClient.md)| client model | 
 
 ### Return type
 
-[**ClientModel**](ClientModel.md)
+[**ModelClient**](ModelClient.md)
 
 ### Authorization
 
@@ -313,7 +313,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 <a name="testendpointparameters"></a>
 # **TestEndpointParameters**
-> void TestEndpointParameters (Body2 body)
+> void TestEndpointParameters (FakeBody body)
 
 Fake endpoint for testing various parameters 假端點 偽のエンドポイント 가짜 엔드 포인트 
 
@@ -338,7 +338,7 @@ namespace Example
             Configuration.Default.Password = "YOUR_PASSWORD";
 
             var apiInstance = new FakeApi();
-            var body = new Body2(); // Body2 | 
+            var body = new FakeBody(); // FakeBody | 
 
             try
             {
@@ -358,7 +358,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**Body2**](Body2.md)|  | 
+ **body** | [**FakeBody**](FakeBody.md)|  | 
 
 ### Return type
 
@@ -398,9 +398,9 @@ namespace Example
         {
             var apiInstance = new FakeApi();
             var enumHeaderStringArray = new List<string>(); // List<string> | Header parameter enum test (string array) (optional) 
-            var enumHeaderString = enumHeaderString_example;  // string | Header parameter enum test (string) (optional) 
+            var enumHeaderString = enumHeaderString_example;  // string | Header parameter enum test (string) (optional)  (default to -efg)
             var enumQueryStringArray = new List<string>(); // List<string> | Query parameter enum test (string array) (optional) 
-            var enumQueryString = enumQueryString_example;  // string | Query parameter enum test (string) (optional) 
+            var enumQueryString = enumQueryString_example;  // string | Query parameter enum test (string) (optional)  (default to -efg)
             var enumQueryInteger = 56;  // int? | Query parameter enum test (double) (optional) 
 
             try
@@ -422,9 +422,9 @@ namespace Example
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **enumHeaderStringArray** | [**List&lt;string&gt;**](string.md)| Header parameter enum test (string array) | [optional] 
- **enumHeaderString** | **string**| Header parameter enum test (string) | [optional] 
+ **enumHeaderString** | **string**| Header parameter enum test (string) | [optional] [default to -efg]
  **enumQueryStringArray** | [**List&lt;string&gt;**](string.md)| Query parameter enum test (string array) | [optional] 
- **enumQueryString** | **string**| Query parameter enum test (string) | [optional] 
+ **enumQueryString** | **string**| Query parameter enum test (string) | [optional] [default to -efg]
  **enumQueryInteger** | **int?**| Query parameter enum test (double) | [optional] 
 
 ### Return type
@@ -443,7 +443,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 <a name="testenumrequestbody"></a>
 # **TestEnumRequestBody**
-> void TestEnumRequestBody (Body4 body = null)
+> void TestEnumRequestBody (EnumFormBody body = null)
 
 To test enum parameters
 
@@ -464,7 +464,7 @@ namespace Example
         public void main()
         {
             var apiInstance = new FakeApi();
-            var body = new Body4(); // Body4 |  (optional) 
+            var body = new EnumFormBody(); // EnumFormBody |  (optional) 
 
             try
             {
@@ -484,7 +484,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**Body4**](Body4.md)|  | [optional] 
+ **body** | [**EnumFormBody**](EnumFormBody.md)|  | [optional] 
 
 ### Return type
 
@@ -559,7 +559,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 <a name="testjsonformdata"></a>
 # **TestJsonFormData**
-> void TestJsonFormData (Body5 body)
+> void TestJsonFormData (FakeJsonFormDataBody body)
 
 test json serialization of form data
 
@@ -578,7 +578,7 @@ namespace Example
         public void main()
         {
             var apiInstance = new FakeApi();
-            var body = new Body5(); // Body5 | 
+            var body = new FakeJsonFormDataBody(); // FakeJsonFormDataBody | 
 
             try
             {
@@ -598,7 +598,7 @@ namespace Example
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**Body5**](Body5.md)|  | 
+ **body** | [**FakeJsonFormDataBody**](FakeJsonFormDataBody.md)|  | 
 
 ### Return type
 

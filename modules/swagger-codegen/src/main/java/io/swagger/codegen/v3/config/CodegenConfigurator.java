@@ -10,6 +10,7 @@ import io.swagger.codegen.v3.CodegenConfig;
 import io.swagger.codegen.v3.CodegenConfigLoader;
 import io.swagger.codegen.v3.CodegenConstants;
 import io.swagger.codegen.v3.auth.AuthParser;
+import io.swagger.codegen.v3.service.HostAccessControl;
 import io.swagger.parser.OpenAPIParser;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.core.util.Json;
@@ -28,15 +29,21 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URI;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
@@ -52,11 +59,13 @@ public class CodegenConfigurator implements Serializable {
 
     private String lang;
     private String inputSpec;
+    private boolean flattenInlineSchema;
     private String inputSpecURL;
     private String outputDir;
     private boolean verbose;
     private boolean skipOverwrite;
     private boolean removeOperationIdPrefix;
+    private boolean skipInlineModelMatches;
     private String templateDir;
     private String templateVersion;
     private String auth;
@@ -71,6 +80,7 @@ public class CodegenConfigurator implements Serializable {
     private String artifactVersion;
     private String library;
     private String ignoreFileOverride;
+    private boolean resolveFully;
     private List<CodegenArgument> codegenArguments = new ArrayList<>();
     private Map<String, String> systemProperties = new HashMap<String, String>();
     private Map<String, String> instantiationTypes = new HashMap<String, String>();
@@ -82,6 +92,7 @@ public class CodegenConfigurator implements Serializable {
 
     private String gitUserId="GIT_USER_ID";
     private String gitRepoId="GIT_REPO_ID";
+    private String gitRepoBaseURL = "https://github.com";
     private String releaseNote="Minor update";
     private String httpUserAgent;
 
@@ -89,6 +100,25 @@ public class CodegenConfigurator implements Serializable {
 
     public CodegenConfigurator() {
         this.setOutputDir(".");
+    }
+
+    private List<HostAccessControl> allowedAuthHosts = new ArrayList<>();
+    private List<HostAccessControl> deniedAuthHosts = new ArrayList<>();
+
+    public List<HostAccessControl> getAllowedAuthHosts() {
+        return allowedAuthHosts;
+    }
+
+    public void setAllowedAuthHosts(List<HostAccessControl> allowedAuthHosts) {
+        this.allowedAuthHosts = allowedAuthHosts;
+    }
+
+    public List<HostAccessControl> getDeniedAuthHosts() {
+        return deniedAuthHosts;
+    }
+
+    public void setDeniedAuthHosts(List<HostAccessControl> deniedAuthHosts) {
+        this.deniedAuthHosts = deniedAuthHosts;
     }
 
     public CodegenConfigurator setLang(String lang) {
@@ -147,6 +177,15 @@ public class CodegenConfigurator implements Serializable {
 
     public CodegenConfigurator setRemoveOperationIdPrefix(boolean removeOperationIdPrefix) {
         this.removeOperationIdPrefix = removeOperationIdPrefix;
+        return this;
+    }
+
+    public boolean getSkipInlineModelMatches() {
+        return skipInlineModelMatches;
+    }
+
+    public CodegenConfigurator setSkipInlineModelMatches(boolean skipInlineModelMatches) {
+        this.skipInlineModelMatches = skipInlineModelMatches;
         return this;
     }
 
@@ -378,6 +417,16 @@ public class CodegenConfigurator implements Serializable {
         return this;
     }
 
+    public String getGitRepoBaseURL() {
+        return gitRepoBaseURL;
+    }
+
+    public CodegenConfigurator setGitRepoBaseURL(String gitRepoBaseURL) {
+        this.gitRepoBaseURL = gitRepoBaseURL;
+        return this;
+    }
+
+
     public String getReleaseNote() {
         return releaseNote;
     }
@@ -419,8 +468,17 @@ public class CodegenConfigurator implements Serializable {
         return this;
     }
 
+    public boolean isResolveFully() {
+        return resolveFully;
+    }
+
+    public CodegenConfigurator setResolveFully(boolean resolveFully) {
+        this.resolveFully = resolveFully;
+        return this;
+    }
+
     public String loadSpecContent(String location, List<AuthorizationValue> auths) throws Exception{
-            location = location.replaceAll("\\\\","/");
+            location = sanitizeSpecificationUrl(location);
             String data = "";
             if (location.toLowerCase().startsWith("http")) {
                 data = RemoteUrl.urlToString(location, auths);
@@ -442,6 +500,10 @@ public class CodegenConfigurator implements Serializable {
             return data;
     }
 
+    private String sanitizeSpecificationUrl(String specificationUrl) {
+        return specificationUrl.replaceAll("\\\\","/");
+    }
+
     public ClientOptInput toClientOptInput() {
 
         Validate.notEmpty(lang, "language must be specified");
@@ -455,22 +517,72 @@ public class CodegenConfigurator implements Serializable {
 
         CodegenConfig config = CodegenConfigLoader.forName(lang);
         ClientOptInput input = new ClientOptInput();
+
+        Predicate<URL> urlMatcher = null;
+        if (!allowedAuthHosts.isEmpty() || !deniedAuthHosts.isEmpty()) {
+            urlMatcher = (url) -> {
+                String host = url.getHost();
+                // first check denies
+                for (HostAccessControl check: deniedAuthHosts) {
+                    if (check.isRegex()) {
+                        if (host.matches(check.getHost())) {
+                            return false;
+                        }
+                    } else if (check.isEndsWith()){
+                        if (host.toLowerCase().endsWith(check.getHost().toLowerCase())){
+                            return false;
+                        }
+                    } else {
+                        if (host.equalsIgnoreCase(check.getHost())) {
+                            return false;
+                        }
+                    }
+                }
+                // then allows
+                for (HostAccessControl check: allowedAuthHosts) {
+                    if (check.isRegex()) {
+                        if (!host.matches(check.getHost())) {
+                            return false;
+                        }
+                    } else if (check.isEndsWith()){
+                        if (!host.toLowerCase().endsWith(check.getHost().toLowerCase())){
+                            return false;
+                        }
+                    } else {
+                        if (!host.equalsIgnoreCase(check.getHost())) {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            };
+        }
+
         final List<AuthorizationValue> authorizationValues = AuthParser.parse(auth);
+        if (!authorizationValues.isEmpty() && urlMatcher != null) {
+            for (AuthorizationValue authVal: authorizationValues) {
+                if (authVal.getUrlMatcher() == null) {
+                    authVal.setUrlMatcher(urlMatcher);
+                }
+            }
+        }
         if (authorizationValue != null) {
+            if (urlMatcher != null) {
+                authorizationValue.setUrlMatcher(urlMatcher);
+            }
             authorizationValues.add(authorizationValue);
         }
 
         if (!StringUtils.isBlank(inputSpec)) {
             config.setInputSpec(inputSpec);
-            ParseOptions options = new ParseOptions();
-            options.setResolve(true);
-            options.setFlatten(true);
+
+            ParseOptions options = buildParseOptions();
+
+
             SwaggerParseResult result = new OpenAPIParser().readContents(inputSpec, authorizationValues, options);
             OpenAPI openAPI = result.getOpenAPI();
-
             if (config.needsUnflattenedSpec()) {
-                ParseOptions optionsUnflattened = new ParseOptions();
-                optionsUnflattened.setResolve(true);
+                ParseOptions optionsUnflattened = buildUnflattenedParseOptions();
                 SwaggerParseResult resultUnflattened = new OpenAPIParser().readContents(inputSpec, authorizationValues, optionsUnflattened);
                 OpenAPI openAPIUnflattened = resultUnflattened.getOpenAPI();
                 config.setUnflattenedOpenAPI(openAPIUnflattened);
@@ -482,34 +594,34 @@ public class CodegenConfigurator implements Serializable {
             LOGGER.debug("getClientOptInput - parsed inputSpec");
         } else {
             String specContent = null;
+            String sanitizedSpecificationUrl = sanitizeSpecificationUrl(inputSpecURL);
             try {
-                specContent = loadSpecContent(inputSpecURL, authorizationValues);
+                specContent = loadSpecContent(sanitizedSpecificationUrl, authorizationValues);
             } catch (Exception e) {
-                String msg = "Unable to read URL: " + inputSpecURL;
+                String msg = "Unable to read URL: " + sanitizedSpecificationUrl;
                 LOGGER.error(msg, e);
                 throw new IllegalArgumentException(msg);
             }
 
             if (StringUtils.isBlank(specContent)) {
-                String msg = "Empty content found in URL: " + inputSpecURL;
+                String msg = "Empty content found in URL: " + sanitizedSpecificationUrl;
                 LOGGER.error(msg);
                 throw new IllegalArgumentException(msg);
             }
             config.setInputSpec(specContent);
-            config.setInputURL(inputSpecURL);
-            ParseOptions options = new ParseOptions();
-            options.setResolve(true);
-            options.setFlatten(true);
-            SwaggerParseResult result = new OpenAPIParser().readLocation(inputSpecURL, authorizationValues, options);
+
+            config.setInputURL(sanitizedSpecificationUrl);
+            ParseOptions options = buildParseOptions();
+            SwaggerParseResult result = new OpenAPIParser().readLocation(sanitizedSpecificationUrl, authorizationValues, options);
+
             OpenAPI openAPI = result.getOpenAPI();
-            LOGGER.debug("getClientOptInput - parsed inputSpecURL " + inputSpecURL);
+            LOGGER.debug("getClientOptInput - parsed inputSpecURL " + sanitizedSpecificationUrl);
             input.opts(new ClientOpts())
                     .openAPI(openAPI);
 
             if (config.needsUnflattenedSpec()) {
-                ParseOptions optionsUnflattened = new ParseOptions();
-                optionsUnflattened.setResolve(true);
-                SwaggerParseResult resultUnflattened = new OpenAPIParser().readLocation(inputSpecURL, authorizationValues, optionsUnflattened);
+                ParseOptions optionsUnflattened = buildUnflattenedParseOptions();
+                SwaggerParseResult resultUnflattened = new OpenAPIParser().readLocation(sanitizedSpecificationUrl, authorizationValues, optionsUnflattened);
                 OpenAPI openAPIUnflattened = resultUnflattened.getOpenAPI();
                 config.setUnflattenedOpenAPI(openAPIUnflattened);
             }
@@ -541,6 +653,7 @@ public class CodegenConfigurator implements Serializable {
         checkAndSetAdditionalProperty(modelNameSuffix, CodegenConstants.MODEL_NAME_SUFFIX);
         checkAndSetAdditionalProperty(gitUserId, CodegenConstants.GIT_USER_ID);
         checkAndSetAdditionalProperty(gitRepoId, CodegenConstants.GIT_REPO_ID);
+        checkAndSetAdditionalProperty(gitRepoBaseURL, CodegenConstants.GIT_REPO_BASE_URL);
         checkAndSetAdditionalProperty(releaseNote, CodegenConstants.RELEASE_NOTE);
         checkAndSetAdditionalProperty(httpUserAgent, CodegenConstants.HTTP_USER_AGENT);
 
@@ -554,6 +667,46 @@ public class CodegenConfigurator implements Serializable {
 
         input.config(config);
         return input;
+    }
+
+    private ParseOptions buildParseOptions() {
+        ParseOptions options = new ParseOptions();
+        options.setResolve(true);
+        options.setResolveFully(resolveFully);
+        options.setFlatten(true);
+        options.setFlattenComposedSchemas(flattenInlineSchema);
+        options.setSkipMatches(this.skipInlineModelMatches);
+
+        if (Objects.equals(System.getenv("SAFELY_RESOLVE_URL"), "true")) {
+            setSafelyResolveURLParseOptions(options);
+        }
+
+        return options;
+    }
+
+    private ParseOptions buildUnflattenedParseOptions() {
+        ParseOptions options = new ParseOptions();
+        options.setResolve(true);
+
+        if (Objects.equals(System.getenv("SAFELY_RESOLVE_URL"), "true")) {
+            setSafelyResolveURLParseOptions(options);
+        }
+
+        return options;
+    }
+
+    private void setSafelyResolveURLParseOptions(ParseOptions options) {
+        List<String> allowList = Optional.ofNullable(System.getenv("REMOTE_REF_ALLOW_LIST"))
+                .map(str -> Arrays.asList(str.split(",")))
+                .orElseGet(Collections::emptyList);
+
+        List<String> blockList = Optional.ofNullable(System.getenv("REMOTE_REF_BLOCK_LIST"))
+                .map(str -> Arrays.asList(str.split(",")))
+                .orElseGet(Collections::emptyList);
+
+        options.setSafelyResolveURL(true);
+        options.setRemoteRefAllowList(allowList);
+        options.setRemoteRefBlockList(blockList);
     }
 
     @JsonAnySetter
@@ -640,4 +793,10 @@ public class CodegenConfigurator implements Serializable {
         return null;
     }
 
+    public boolean isFlattenInlineSchem() {
+        return flattenInlineSchema;
+    }
+    public void setFlattenInlineSchema(boolean flattenInlineComposedSchemas) {
+        this.flattenInlineSchema = flattenInlineComposedSchemas;
+    }
 }

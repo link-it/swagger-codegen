@@ -1,8 +1,11 @@
 package io.swagger.api;
 
+import io.swagger.model.AllPetsResponse;
 import java.io.File;
 import io.swagger.model.ModelApiResponse;
 import io.swagger.model.Pet;
+import io.swagger.model.SinglePetResponse;
+import io.swagger.model.SubCategory;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -54,6 +57,15 @@ public interface PetApi  {
         @ApiResponse(responseCode = "400", description = "Invalid pet value") })
     public void deletePet(@PathParam("petId") Long petId, @HeaderParam("api_key") String apiKey);
 
+    @POST
+    @Path("/pet/category")
+    @Consumes({ "application/json" })
+    @Produces({ "application/json" })
+    @Operation(summary = "", tags={ "pet" })
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ModelApiResponse.class))) })
+    public ModelApiResponse doCategoryStuff(@Valid SubCategory body);
+
     /**
      * Finds Pets by status
      *
@@ -65,7 +77,7 @@ public interface PetApi  {
     @Produces({ "application/xml", "application/json" })
     @Operation(summary = "Finds Pets by status", tags={ "pet" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Pet.class)))),
+        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = "application/xml", array = @ArraySchema(schema = @Schema(implementation = Pet.class)))),
         @ApiResponse(responseCode = "400", description = "Invalid status value") })
     public List<Pet> findPetsByStatus(@QueryParam("status") @NotNull List<String> status);
 
@@ -80,9 +92,17 @@ public interface PetApi  {
     @Produces({ "application/xml", "application/json" })
     @Operation(summary = "Finds Pets by tags", tags={ "pet" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Pet.class)))),
+        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = "application/xml", array = @ArraySchema(schema = @Schema(implementation = Pet.class)))),
         @ApiResponse(responseCode = "400", description = "Invalid tag value") })
     public List<Pet> findPetsByTags(@QueryParam("tags") @NotNull List<String> tags);
+
+    @GET
+    @Path("/allPets")
+    @Produces({ "application/json" })
+    @Operation(summary = "", tags={ "pet" })
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "a single random pet", content = @Content(mediaType = "application/json", schema = @Schema(implementation = AllPetsResponse.class))) })
+    public AllPetsResponse getAllPets();
 
     /**
      * Find pet by ID
@@ -95,10 +115,18 @@ public interface PetApi  {
     @Produces({ "application/xml", "application/json" })
     @Operation(summary = "Find pet by ID", tags={ "pet" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = Pet.class))),
+        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = Pet.class))),
         @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
         @ApiResponse(responseCode = "404", description = "Pet not found") })
     public Pet getPetById(@PathParam("petId") Long petId);
+
+    @GET
+    @Path("/randomPet")
+    @Produces({ "application/json" })
+    @Operation(summary = "", tags={ "pet" })
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "a single random pet", content = @Content(mediaType = "application/json", schema = @Schema(implementation = SinglePetResponse.class))) })
+    public SinglePetResponse getRandomPet();
 
     /**
      * Update an existing pet
@@ -136,6 +164,6 @@ public interface PetApi  {
     @Produces({ "application/json" })
     @Operation(summary = "uploads an image", tags={ "pet" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = ModelApiResponse.class))) })
+        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ModelApiResponse.class))) })
     public ModelApiResponse uploadFile(@PathParam("petId") Long petId, @Multipart(value = "additionalMetadata", required = false)  String additionalMetadata,  @Multipart(value = "file" , required = false) Attachment fileDetail);
 }

@@ -2,8 +2,19 @@ package io.swagger.api;
 
 import java.math.BigDecimal;
 import io.swagger.model.Client;
+import io.swagger.model.EnumFormBody;
+import io.swagger.model.FakeBody;
+import io.swagger.model.FakeBody1;
+import io.swagger.model.FakeJsonFormDataBody;
 import io.swagger.model.OuterComposite;
-import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,17 +55,21 @@ public interface FakeApiDelegate {
     /**
      * @see FakeApi#testEndpointParameters
      */
-    ResponseEntity<Void> testEndpointParameters( Object  body);
+    ResponseEntity<Void> testEndpointParameters( FakeBody  body);
 
     /**
      * @see FakeApi#testEnumParameters
      */
-    ResponseEntity<Void> testEnumParameters( Object  body,
-         List<String>  enumHeaderStringArray,
+    ResponseEntity<Void> testEnumParameters( List<String>  enumHeaderStringArray,
          String  enumHeaderString,
          List<String>  enumQueryStringArray,
          String  enumQueryString,
          Integer  enumQueryInteger);
+
+    /**
+     * @see FakeApi#testEnumRequestBody
+     */
+    ResponseEntity<Void> testEnumRequestBody( EnumFormBody  body);
 
     /**
      * @see FakeApi#testInlineAdditionalProperties
@@ -64,6 +79,6 @@ public interface FakeApiDelegate {
     /**
      * @see FakeApi#testJsonFormData
      */
-    ResponseEntity<Void> testJsonFormData( Object  body);
+    ResponseEntity<Void> testJsonFormData( FakeJsonFormDataBody  body);
 
 }

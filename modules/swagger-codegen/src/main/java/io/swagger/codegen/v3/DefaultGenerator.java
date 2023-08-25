@@ -200,9 +200,9 @@ public class DefaultGenerator extends AbstractGenerator implements Generator {
 
         config.additionalProperties().put(CodegenConstants.GENERATE_API_DOCS, generateApiDocumentation);
         config.additionalProperties().put(CodegenConstants.GENERATE_MODEL_DOCS, generateModelDocumentation);
-        
+
         // Additional properties could be set already (f.e. using Maven plugin)
-        if (useOas2Option != null || !config.additionalProperties().containsKey(CodegenConstants.USE_OAS2)) {
+        if (useOas2Option != null && !config.additionalProperties().containsKey(CodegenConstants.USE_OAS2)) {
             config.additionalProperties().put(CodegenConstants.USE_OAS2, useOas2);
         }
 
@@ -247,7 +247,7 @@ public class DefaultGenerator extends AbstractGenerator implements Generator {
             LOGGER.error("Missing required field info version. Default appVersion set to 1.0.0");
             config.additionalProperties().put("appVersion", "1.0.0");
         }
-        
+
         if (StringUtils.isEmpty(info.getDescription())) {
             // set a default description if none is provided
             config.additionalProperties().put("appDescription",
@@ -394,8 +394,14 @@ public class DefaultGenerator extends AbstractGenerator implements Generator {
 
          if (composedModels != null && !composedModels.isEmpty()) {
             for (CodegenModel composedModel : composedModels) {
+                if (allProcessedModels.get(composedModel.name) != null) {
+                    final Map<String, Object> models = (Map<String, Object>) allProcessedModels.get(composedModel.name);
+                    models.put("x-is-composed-model", composedModel.isComposedModel);
+                    continue;
+                }
                 final Map<String, Object> models = processModel(composedModel, config, schemas);
                 models.put("classname", config.toModelName(composedModel.name));
+                models.put("x-is-composed-model", composedModel.isComposedModel);
                 models.putAll(config.additionalProperties());
                 allProcessedModels.put(composedModel.name, models);
             }
@@ -413,7 +419,7 @@ public class DefaultGenerator extends AbstractGenerator implements Generator {
                     continue;
                 }
                 Map<String, Object> modelTemplate = (Map<String, Object>) ((List<Object>) models.get("models")).get(0);
-                if (isJavaCodegen(config.getName())) {
+                if (config.checkAliasModel()) {
                     // Special handling of aliases only applies to Java
                     if (modelTemplate != null && modelTemplate.containsKey("model")) {
                         CodegenModel codegenModel = (CodegenModel) modelTemplate.get("model");
@@ -467,6 +473,9 @@ public class DefaultGenerator extends AbstractGenerator implements Generator {
             hasModel = false;
         }
 
+        if (this.openAPI.getPaths() == null) {
+            return;
+        }
         Map<String, List<CodegenOperation>> paths = processPaths(this.openAPI.getPaths());
         Set<String> apisToGenerate = null;
         String apiNames = System.getProperty("apis");
@@ -922,7 +931,6 @@ public class DefaultGenerator extends AbstractGenerator implements Generator {
                     codegenOperation.getVendorExtensions().put(CodegenConstants.HAS_AUTH_METHODS_EXT_NAME, Boolean.TRUE);
                 }
             } catch (Exception ex) {
-                ex.printStackTrace();
                 String msg = "Could not process operation:\n" //
                         + "  Tag: " + tag + "\n"//
                         + "  Operation: " + operation.getOperationId() + "\n" //
@@ -1059,8 +1067,6 @@ public class DefaultGenerator extends AbstractGenerator implements Generator {
         objs.put("package", config.modelPackage());
         List<Object> models = new ArrayList<>();
 
-        objs.put("x-is-composed-model", codegenModel.isComposedModel);
-
         Map<String, Object> modelObject = new HashMap<>();
         modelObject.put("model", codegenModel);
         modelObject.put("importPath", config.toModelImport(codegenModel.classname));
@@ -1110,11 +1116,6 @@ public class DefaultGenerator extends AbstractGenerator implements Generator {
             }
         }
         return authMethods;
-    }
-
-    private boolean isJavaCodegen(String name) {
-        return name.equalsIgnoreCase("java")
-                || name.equalsIgnoreCase("inflector");
     }
 
     private Boolean getCustomOptionBooleanValue(String option) {

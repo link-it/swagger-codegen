@@ -7,6 +7,10 @@ import com.sun.jersey.multipart.FormDataParam;
 
 import java.math.BigDecimal;
 import io.swagger.model.Client;
+import io.swagger.model.EnumFormBody;
+import io.swagger.model.FakeBody;
+import io.swagger.model.FakeBody1;
+import io.swagger.model.FakeJsonFormDataBody;
 import io.swagger.model.OuterComposite;
 
 import java.util.Map;
@@ -32,12 +36,14 @@ public abstract class FakeApiService {
       throws NotFoundException;
       public abstract Response testClientModel(Client body,SecurityContext securityContext)
       throws NotFoundException;
-      public abstract Response testEndpointParameters(Object body,SecurityContext securityContext)
+      public abstract Response testEndpointParameters(FakeBody body,SecurityContext securityContext)
       throws NotFoundException;
-      public abstract Response testEnumParameters(Object body,List<String> enumHeaderStringArray,String enumHeaderString, List<String> enumQueryStringArray, String enumQueryString, Integer enumQueryInteger,SecurityContext securityContext)
+      public abstract Response testEnumParameters(List<String> enumHeaderStringArray,String enumHeaderString, List<String> enumQueryStringArray, String enumQueryString, Integer enumQueryInteger,SecurityContext securityContext)
+      throws NotFoundException;
+      public abstract Response testEnumRequestBody(EnumFormBody body,SecurityContext securityContext)
       throws NotFoundException;
       public abstract Response testInlineAdditionalProperties(Map<String, String> body,SecurityContext securityContext)
       throws NotFoundException;
-      public abstract Response testJsonFormData(Object body,SecurityContext securityContext)
+      public abstract Response testJsonFormData(FakeJsonFormDataBody body,SecurityContext securityContext)
       throws NotFoundException;
 }

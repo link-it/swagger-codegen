@@ -3,6 +3,7 @@ package io.swagger.api;
 import java.io.File;
 import io.swagger.model.ModelApiResponse;
 import io.swagger.model.Pet;
+import io.swagger.model.SubCategory;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
@@ -23,14 +24,15 @@ import javax.validation.Valid;
 
 @Path("/pet")
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJAXRSSpecServerCodegen", date = "2019-10-08T21:26:16.639+02:00[Europe/Rome]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJAXRSSpecServerCodegen", date = "2022-07-18T07:27:31.515-05:00[America/Bogota]")
 public interface PetApi {
 
     @POST
     @Consumes({ "application/json", "application/xml" })
     @Operation(summary = "Add a new pet to the store", description = "", security = {
         @SecurityRequirement(name = "petstore_auth", scopes = {
-            ""        })    }, tags={ "pet" })
+            "write:pets",
+"read:pets"        })    }, tags={ "pet" })
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "405", description = "Invalid input") })
     void addPet(@Valid Pet body);
@@ -38,7 +40,8 @@ public interface PetApi {
     @Path("/{petId}")
     @Operation(summary = "Deletes a pet", description = "", security = {
         @SecurityRequirement(name = "petstore_auth", scopes = {
-            ""        })    }, tags={ "pet" })
+            "write:pets",
+"read:pets"        })    }, tags={ "pet" })
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "400", description = "Invalid pet value") })
     void deletePet( @PathParam("petId")
@@ -48,14 +51,23 @@ public interface PetApi {
 
  String apiKey
 );
+    @POST
+    @Path("/category")
+    @Consumes({ "application/json" })
+    @Produces({ "application/json" })
+    @Operation(summary = "", description = "", tags={ "pet" })
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ModelApiResponse.class))) })
+    ModelApiResponse doCategoryStuff(@Valid SubCategory body);
     @GET
     @Path("/findByStatus")
     @Produces({ "application/xml", "application/json" })
     @Operation(summary = "Finds Pets by status", description = "Multiple status values can be provided with comma separated strings", security = {
         @SecurityRequirement(name = "petstore_auth", scopes = {
-            ""        })    }, tags={ "pet" })
+            "write:pets",
+"read:pets"        })    }, tags={ "pet" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Pet.class)))),
+        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = "application/xml", array = @ArraySchema(schema = @Schema(implementation = Pet.class)))),
         @ApiResponse(responseCode = "400", description = "Invalid status value") })
     List<Pet> findPetsByStatus( @NotNull  @QueryParam("status") 
 
@@ -66,9 +78,10 @@ public interface PetApi {
     @Produces({ "application/xml", "application/json" })
     @Operation(summary = "Finds Pets by tags", description = "Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.", security = {
         @SecurityRequirement(name = "petstore_auth", scopes = {
-            ""        })    }, tags={ "pet" })
+            "write:pets",
+"read:pets"        })    }, tags={ "pet" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Pet.class)))),
+        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = "application/xml", array = @ArraySchema(schema = @Schema(implementation = Pet.class)))),
         @ApiResponse(responseCode = "400", description = "Invalid tag value") })
     List<Pet> findPetsByTags( @NotNull  @QueryParam("tags") 
 
@@ -80,7 +93,7 @@ public interface PetApi {
     @Operation(summary = "Find pet by ID", description = "Returns a single pet", security = {
         @SecurityRequirement(name = "api_key")    }, tags={ "pet" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = Pet.class))),
+        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = Pet.class))),
         @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
         @ApiResponse(responseCode = "404", description = "Pet not found") })
     Pet getPetById( @PathParam("petId")
@@ -91,7 +104,8 @@ public interface PetApi {
     @Consumes({ "application/json", "application/xml" })
     @Operation(summary = "Update an existing pet", description = "", security = {
         @SecurityRequirement(name = "petstore_auth", scopes = {
-            ""        })    }, tags={ "pet" })
+            "write:pets",
+"read:pets"        })    }, tags={ "pet" })
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
         @ApiResponse(responseCode = "404", description = "Pet not found"),
@@ -102,7 +116,8 @@ public interface PetApi {
     @Consumes({ "application/x-www-form-urlencoded" })
     @Operation(summary = "Updates a pet in the store with form data", description = "", security = {
         @SecurityRequirement(name = "petstore_auth", scopes = {
-            ""        })    }, tags={ "pet" })
+            "write:pets",
+"read:pets"        })    }, tags={ "pet" })
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "405", description = "Invalid input") })
     void updatePetWithForm( @PathParam("petId")
@@ -115,9 +130,10 @@ public interface PetApi {
     @Produces({ "application/json" })
     @Operation(summary = "uploads an image", description = "", security = {
         @SecurityRequirement(name = "petstore_auth", scopes = {
-            ""        })    }, tags={ "pet" })
+            "write:pets",
+"read:pets"        })    }, tags={ "pet" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = ModelApiResponse.class))) })
+        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ModelApiResponse.class))) })
     ModelApiResponse uploadFile( @PathParam("petId")
 
  @Parameter(description = "ID of pet to update") Long petId

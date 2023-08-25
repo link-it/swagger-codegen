@@ -14,7 +14,6 @@ package io.swagger.client.model;
 
 import java.util.Objects;
 import java.util.Arrays;
-import io.swagger.client.model.OneOfAllPetsResponseItems;
 import java.util.ArrayList;
 import java.util.List;
 import android.os.Parcelable;
@@ -72,7 +71,6 @@ public class AllPetsResponse extends ArrayList<OneOfAllPetsResponseItems> implem
   }
 
   AllPetsResponse(Parcel in) {
-    in.readTypedList(this, OneOfAllPetsResponseItems.CREATOR);
   }
 
   public int describeContents() {

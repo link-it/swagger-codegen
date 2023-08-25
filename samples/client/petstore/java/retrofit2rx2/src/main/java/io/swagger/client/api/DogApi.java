@@ -27,7 +27,7 @@ public interface DogApi {
   })
   @POST("dog")
   Observable<Void> addDog(
-                    @retrofit2.http.Body Dog body    
+    @retrofit2.http.Body Dog body
   );
 
   /**
@@ -39,7 +39,7 @@ public interface DogApi {
    */
   @DELETE("dog/{dogId}")
   Observable<Void> deleteDog(
-            @retrofit2.http.Path("dogId") Long dogId            ,             @retrofit2.http.Header("api_key") String apiKey        
+    @retrofit2.http.Path("dogId") Long dogId, @retrofit2.http.Header("api_key") String apiKey
   );
 
   /**
@@ -50,7 +50,7 @@ public interface DogApi {
    */
   @GET("dog/{dogId}")
   Observable<Dog> getDogById(
-            @retrofit2.http.Path("dogId") Long dogId            
+    @retrofit2.http.Path("dogId") Long dogId
   );
 
   /**
@@ -64,13 +64,13 @@ public interface DogApi {
   })
   @PUT("dog")
   Observable<Void> updateDog(
-                    @retrofit2.http.Body Dog body    
+    @retrofit2.http.Body Dog body
   );
 
   /**
    * Updates a dog
    * 
-   * @param animalId ID of dog that needs to be updated (required)
+   * @param dogId ID of dog that needs to be updated (required)
    * @param name  (optional)
    * @param status  (optional)
    * @return Call&lt;Void&gt;
@@ -78,7 +78,7 @@ public interface DogApi {
   @retrofit2.http.FormUrlEncoded
   @POST("dog/{dogId}")
   Observable<Void> updateDogWithForm(
-            @retrofit2.http.Path("animalId") Long animalId            ,                     @retrofit2.http.Field("name") String name,                     @retrofit2.http.Field("status") String status
+    @retrofit2.http.Path("dogId") Long dogId, @retrofit2.http.Field("name") String name, @retrofit2.http.Field("status") String status
   );
 
 }

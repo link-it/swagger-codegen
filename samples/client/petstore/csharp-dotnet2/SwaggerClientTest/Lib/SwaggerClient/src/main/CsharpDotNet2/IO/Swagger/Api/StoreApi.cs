@@ -12,22 +12,22 @@ namespace IO.Swagger.Api
     public interface IStoreApi
     {
         /// <summary>
-        /// Delete purchase order by ID For valid response try integer IDs with value &lt; 1000. Anything above 1000 or nonintegers will generate API errors
+        /// Delete purchase order by ID For valid response try integer IDs with positive integer value.\\ \\ Negative or non-integer values will generate API errors
         /// </summary>
         /// <param name="orderId">ID of the order that needs to be deleted</param>
         /// <returns></returns>
-        void DeleteOrder (string orderId);
+        void DeleteOrder (long? orderId);
         /// <summary>
         /// Returns pet inventories by status Returns a map of status codes to quantities
         /// </summary>
         /// <returns>Dictionary&lt;string, int?&gt;</returns>
         Dictionary<string, int?> GetInventory ();
         /// <summary>
-        /// Find purchase order by ID For valid response try integer IDs with value &lt;&#x3D; 5 or &gt; 10. Other values will generated exceptions
+        /// Find purchase order by ID For valid response try integer IDs with value &gt;&#x3D; 1 and &lt;&#x3D; 10.\\ \\ Other values will generated exceptions
         /// </summary>
         /// <param name="orderId">ID of pet that needs to be fetched</param>
         /// <returns>Order</returns>
-        Order GetOrderById (int? orderId);
+        Order GetOrderById (long? orderId);
         /// <summary>
         /// Place an order for a pet 
         /// </summary>
@@ -90,11 +90,11 @@ namespace IO.Swagger.Api
         public ApiClient ApiClient {get; set;}
     
         /// <summary>
-        /// Delete purchase order by ID For valid response try integer IDs with value &lt; 1000. Anything above 1000 or nonintegers will generate API errors
+        /// Delete purchase order by ID For valid response try integer IDs with positive integer value.\\ \\ Negative or non-integer values will generate API errors
         /// </summary>
         /// <param name="orderId">ID of the order that needs to be deleted</param>
         /// <returns></returns>
-        public void DeleteOrder (string orderId)
+        public void DeleteOrder (long? orderId)
         {
             // verify the required parameter 'orderId' is set
             if (orderId == null) throw new ApiException(400, "Missing required parameter 'orderId' when calling DeleteOrder");
@@ -156,11 +156,11 @@ namespace IO.Swagger.Api
         }
     
         /// <summary>
-        /// Find purchase order by ID For valid response try integer IDs with value &lt;&#x3D; 5 or &gt; 10. Other values will generated exceptions
+        /// Find purchase order by ID For valid response try integer IDs with value &gt;&#x3D; 1 and &lt;&#x3D; 10.\\ \\ Other values will generated exceptions
         /// </summary>
         /// <param name="orderId">ID of pet that needs to be fetched</param>
         /// <returns>Order</returns>
-        public Order GetOrderById (int? orderId)
+        public Order GetOrderById (long? orderId)
         {
             // verify the required parameter 'orderId' is set
             if (orderId == null) throw new ApiException(400, "Missing required parameter 'orderId' when calling GetOrderById");

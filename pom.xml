@@ -9,7 +9,7 @@
     <artifactId>swagger-codegen-project</artifactId>
     <packaging>pom</packaging>
     <name>swagger-codegen-project</name>
-    <version>3.0.18-gov4j-4</version>
+    <version>3.0.46-gov4j-1-SNAPSHOT</version>
     <url>https://github.com/swagger-api/swagger-codegen</url>
     <scm>
         <connection>scm:git:git@github.com:swagger-api/swagger-codegen.git</connection>
@@ -137,12 +137,16 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${surefire-version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.surefire</groupId>
+                        <artifactId>surefire-junit4</artifactId>
+                        <version>3.0.0</version>
+                    </dependency>
+                </dependencies>
                 <configuration>
                     <testNGArtifactName>none:none</testNGArtifactName>
-                    <argLine>-XX:+StartAttachListener</argLine>
-                    <argLine>
-                        -javaagent:${settings.localRepository}/org/jmockit/jmockit/${jmockit-version}/jmockit-${jmockit-version}.jar
-                    </argLine>
+                    <argLine>-javaagent:${settings.localRepository}/org/jmockit/jmockit/${jmockit-version}/jmockit-${jmockit-version}.jar -XX:+IgnoreUnrecognizedVMOptions --add-opens=java.base/java.util=ALL-UNNAMED</argLine>
                 </configuration>
                 <executions>
                     <execution>
@@ -174,16 +178,12 @@
             </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.6.1</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
+                <version>3.10.1</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.0.2</version>
+                <version>3.3.0</version>
                 <configuration>
                     <archive>
                         <manifestEntries>
@@ -198,7 +198,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
-                <version>3.5.1</version>
+                <version>3.12.0</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -209,15 +209,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.0.1</version>
+                <version>3.5.0</version>
                 <configuration>
                     <aggregate>true</aggregate>
                     <source>1.8</source>
                     <encoding>UTF-8</encoding>
                     <maxmemory>1g</maxmemory>
-                    <links>
-                        <link>http://docs.oracle.com/javase/8/docs/api</link>
-                    </links>
                     <excludePackageNames>${javadoc.package.exclude}</excludePackageNames>
                     <additionalOptions>
                         <additionalOption>-Xdoclint:none</additionalOption>
@@ -236,7 +233,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.1</version>
+                <version>3.2.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -250,7 +247,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>1.4.1</version>
+                <version>3.2.1</version>
                 <executions>
                     <execution>
                         <id>enforce-versions</id>
@@ -275,10 +272,37 @@
                     <artifactId>formatter-maven-plugin</artifactId>
                     <version>0.5.2</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>3.3.2</version>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
     <profiles>
+        <profile>
+            <id>security</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.owasp</groupId>
+                        <artifactId>dependency-check-maven</artifactId>
+                        <version>6.5.3</version>
+                        <configuration>
+                            <skipSystemScope>true</skipSystemScope>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
         <profile>
             <id>release-profile</id>
             <properties>
@@ -429,18 +453,6 @@
             </activation>
             <modules>
                 <module>samples/client/petstore/java/jersey2</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>java-client-jersey2-java6</id>
-            <activation>
-                <property>
-                    <name>env</name>
-                    <value>java</value>
-                </property>
-            </activation>
-            <modules>
-                <module>samples/client/petstore/java/jersey2-java6</module>
             </modules>
         </profile>
         <profile>
@@ -937,7 +949,7 @@
 
 
                 <!-- <module>samples/server/petstore/erlang-server</module> note: make sample compilation work -->
-				<!-- clients -->
+                <!-- clients -->
                 <!--<module>samples/client/petstore/php/SwaggerClient-php</module>-->
                 <!--<module>samples/client/petstore/ruby</module>-->
                 <!--<module>samples/client/petstore/scala</module>-->
@@ -978,7 +990,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
-                <version>2.5</version>
+                <version>3.3.0</version>
                 <configuration>
                     <aggregate>true</aggregate>
                 </configuration>
@@ -986,7 +998,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>2.9</version>
+                <version>3.4.2</version>
                 <reportSets>
                     <reportSet>
                         <reports>
@@ -1121,7 +1133,7 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
-                <version>${jackson-version}</version>
+                <version>${jackson-databind-version}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
@@ -1197,6 +1209,46 @@
                 <version>${jmockit-version}</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>org.json</groupId>
+                <artifactId>json</artifactId>
+                <version>20230227</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.core</groupId>
+                <artifactId>jersey-common</artifactId>
+                <version>${jersey-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.core</groupId>
+                <artifactId>jersey-client</artifactId>
+                <version>${jersey-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.media</groupId>
+                <artifactId>jersey-media-multipart</artifactId>
+                <version>${jersey-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.core</groupId>
+                <artifactId>jersey-server</artifactId>
+                <version>${jersey-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.containers</groupId>
+                <artifactId>jersey-container-servlet-core</artifactId>
+                <version>${jersey-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.media</groupId>
+                <artifactId>jersey-media-jaxb</artifactId>
+                <version>${jersey-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.inject</groupId>
+                <artifactId>jersey-hk2</artifactId>
+                <version>${jersey-version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <repositories>
@@ -1222,32 +1274,33 @@
         </repository>
     </repositories>
     <properties>
-        <swagger-codegen-generators-version>1.0.18</swagger-codegen-generators-version>
-        <swagger-core-version>2.1.1</swagger-core-version>
-        <swagger-core-version-v1>1.6.0</swagger-core-version-v1>
-        <swagger-parser-version>2.0.18</swagger-parser-version>
-        <swagger-parser-version-v1>1.0.50</swagger-parser-version-v1>
-        <jackson-version>2.10.1</jackson-version>
+        <maven.compiler.release>8</maven.compiler.release>
+        <swagger-codegen-generators-version>1.0.42-gov4j-1-SNAPSHOT</swagger-codegen-generators-version>
+        <swagger-core-version>2.2.11</swagger-core-version>
+        <swagger-core-version-v1>1.6.11</swagger-core-version-v1>
+        <swagger-parser-version>2.1.14</swagger-parser-version>
+        <swagger-parser-version-v1>1.0.66</swagger-parser-version-v1>
+        <jackson-version>2.15.1</jackson-version>
+        <jackson-databind-version>2.15.1</jackson-databind-version>
         <scala-version>2.11.1</scala-version>
         <felix-version>3.3.0</felix-version>
-        <commons-io-version>2.4</commons-io-version>
-        <commons-cli-version>1.2</commons-cli-version>
-        <junit-version>4.8.1</junit-version>
+        <commons-io-version>2.11.0</commons-io-version>
+        <commons-cli-version>1.5.0</commons-cli-version>
+        <junit-version>4.13.2</junit-version>
 	<jackson-coreutils-version>1.8</jackson-coreutils-version>
         <maven-plugin-version>1.0.0</maven-plugin-version>
-        <commons-lang-version>3.4</commons-lang-version>
-        <slf4j-version>1.7.25</slf4j-version>
-        <logback-version>1.2.3</logback-version>
+        <commons-lang-version>3.12.0</commons-lang-version>
+        <slf4j-version>1.7.36</slf4j-version>
+        <logback-version>1.4.6</logback-version>
         <scala-maven-plugin-version>3.2.1</scala-maven-plugin-version>
-        <jmustache-version>1.12</jmustache-version>
-        <testng-version>6.9.6</testng-version>
-        <surefire-version>2.22.0</surefire-version>
-        <jmockit-version>1.25</jmockit-version>
-        <reflections-version>0.9.11</reflections-version>
-        <swagger-codegen-generators-version>1.0.18-gov4j-4</swagger-codegen-generators-version>
-        <jmockit-version>1.42</jmockit-version>
-	<guava-version>26.0-jre</guava-version>
-        <snakeyaml-version>1.24</snakeyaml-version>
-        <handlebars-version>4.1.2</handlebars-version>
+        <jmustache-version>1.15</jmustache-version>
+        <testng-version>7.7.1</testng-version>
+        <surefire-version>3.0.0</surefire-version>
+        <jmockit-version>1.49</jmockit-version>
+        <reflections-version>0.10.2</reflections-version>
+        <mockito-version>5.2.0</mockito-version>
+        <snakeyaml-version>2.0</snakeyaml-version>
+        <handlebars-version>4.3.1</handlebars-version>
+        <jersey-version>2.39.1</jersey-version>
     </properties>
 </project>

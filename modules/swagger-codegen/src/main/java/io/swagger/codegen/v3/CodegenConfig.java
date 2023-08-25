@@ -41,6 +41,8 @@ public interface CodegenConfig {
 
     String embeddedTemplateDir();
 
+    String customTemplateDir();
+
     String getTemplateVersion();
 
     String modelFileFolder();
@@ -206,6 +208,10 @@ public interface CodegenConfig {
 
     String getGitRepoId();
 
+    void setGitRepoBaseURL(String gitRepoBaseURL);
+
+    String getGitRepoBaseURL();
+
     void setReleaseNote(String releaseNote);
 
     String getReleaseNote();
@@ -245,4 +251,8 @@ public interface CodegenConfig {
     boolean defaultIgnoreImportMappingOption();
 
     ISchemaHandler getSchemaHandler();
+
+    default boolean checkAliasModel() {
+        return false;
+    }
 }

@@ -1,9 +1,9 @@
 openapi: 3.0.1
 info:
   title: Swagger Petstore
-  description: 'This spec is mainly for testing Petstore server and contains fake
-    endpoints, models. Please do not use this for any other purpose. Special characters:
-    " \'
+  description: "This spec is mainly for testing Petstore server and contains fake\
+    \ endpoints, models. Please do not use this for any other purpose. Special characters:\
+    \ \" \\"
   termsOfService: http://swagger.io/terms/
   contact:
     email: apiteam@swagger.io
@@ -105,11 +105,11 @@ paths:
           type: array
           items:
             type: string
+            default: available
             enum:
             - available
             - pending
             - sold
-            default: available
       responses:
         "200":
           description: successful operation
@@ -138,8 +138,8 @@ paths:
       tags:
       - pet
       summary: Finds Pets by tags
-      description: Multiple tags can be provided with comma separated strings. Use
-        tag1, tag2, tag3 for testing.
+      description: "Multiple tags can be provided with comma separated strings. Use\
+        \ tag1, tag2, tag3 for testing."
       operationId: findPetsByTags
       parameters:
       - name: tags
@@ -231,7 +231,7 @@ paths:
         content:
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/body'
+              $ref: '#/components/schemas/pet_petId_body'
       responses:
         "405":
           description: Invalid input
@@ -294,7 +294,7 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/body_1'
+              $ref: '#/components/schemas/petId_uploadImage_body'
       responses:
         "200":
           description: successful operation
@@ -333,6 +333,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AllPetsResponse'
+      x-accepts: application/json
+  /pet/category:
+    post:
+      tags:
+      - pet
+      operationId: doCategoryStuff
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubCategory'
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      x-contentType: application/json
       x-accepts: application/json
   /store/inventory:
     get:
@@ -700,10 +719,10 @@ paths:
           type: array
           items:
             type: string
+            default: $
             enum:
             - '>'
             - $
-            default: $
       - name: enum_header_string
         in: header
         description: Header parameter enum test (string)
@@ -712,11 +731,11 @@ paths:
         explode: false
         schema:
           type: string
+          default: -efg
           enum:
           - _abc
           - -efg
           - (xyz)
-          default: -efg
       - name: enum_query_string_array
         in: query
         description: Query parameter enum test (string array)
@@ -727,10 +746,10 @@ paths:
           type: array
           items:
             type: string
+            default: $
             enum:
             - '>'
             - $
-            default: $
       - name: enum_query_string
         in: query
         description: Query parameter enum test (string)
@@ -739,11 +758,11 @@ paths:
         explode: true
         schema:
           type: string
+          default: -efg
           enum:
           - _abc
           - -efg
           - (xyz)
-          default: -efg
       - name: enum_query_integer
         in: query
         description: Query parameter enum test (double)
@@ -782,10 +801,10 @@ paths:
         content:
           application/xml; charset=utf-8:
             schema:
-              $ref: '#/components/schemas/body_2'
+              $ref: '#/components/schemas/fake_body'
           application/json; charset=utf-8:
             schema:
-              $ref: '#/components/schemas/body_3'
+              $ref: '#/components/schemas/fake_body_1'
         required: true
       responses:
         "400":
@@ -831,7 +850,7 @@ paths:
         content:
           '*/*':
             schema:
-              $ref: '#/components/schemas/body_4'
+              $ref: '#/components/schemas/enum_form_body'
       responses:
         "400":
           description: Invalid request
@@ -939,7 +958,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/body_5'
+              $ref: '#/components/schemas/fake_jsonFormData_body'
         required: true
       responses:
         "200":
@@ -1093,7 +1112,7 @@ paths:
         content:
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/body_6'
+              $ref: '#/components/schemas/animal_animalId_body'
       responses:
         "405":
           description: Invalid input
@@ -1217,7 +1236,7 @@ paths:
       summary: Updates a dog
       operationId: updateDogWithForm
       parameters:
-      - name: animalId
+      - name: dogId
         in: path
         description: ID of dog that needs to be updated
         required: true
@@ -1230,7 +1249,7 @@ paths:
         content:
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/body_7'
+              $ref: '#/components/schemas/dog_dogId_body'
       responses:
         "405":
           description: Invalid input
@@ -1410,11 +1429,11 @@ components:
         name: Name
     EnumClass:
       type: string
+      default: -efg
       enum:
       - _abc
       - -efg
       - (xyz)
-      default: -efg
     List:
       type: object
       properties:
@@ -1527,7 +1546,7 @@ components:
           type: integer
           format: int64
       xml:
-        name: $special[model.name]
+        name: "$special[model.name]"
     Return:
       type: object
       properties:
@@ -1628,10 +1647,10 @@ components:
           type: number
           format: double
         string:
-          pattern: /[a-z]/i
+          pattern: "/[a-z]/i"
           type: string
         byte:
-          pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
+          pattern: "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
           type: string
           format: byte
         binary:
@@ -1781,6 +1800,16 @@ components:
         status: available
       xml:
         name: Pet
+    NullableEnumModel:
+      type: object
+      properties:
+        enumProp:
+          type: string
+          nullable: true
+          enum:
+          - a
+          - b
+          - null
     SinglePetResponse:
       type: object
       properties:
@@ -1800,7 +1829,29 @@ components:
         oneOf:
         - $ref: '#/components/schemas/Dog'
         - $ref: '#/components/schemas/Cat'
-        x-model-name: OneOfAllPetsResponseItems
+    SubCategory:
+      type: object
+      properties:
+        category:
+          allOf:
+          - $ref: '#/components/schemas/Category'
+          - type: object
+            properties:
+              foo:
+                type: boolean
+              bar:
+                type: integer
+              beer:
+                type: string
+              drunk:
+                $ref: '#/components/schemas/User'
+        category2:
+          $ref: '#/components/schemas/Category'
+        pets:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/Pet'
     hasOnlyReadOnly:
       type: object
       properties:
@@ -1810,7 +1861,7 @@ components:
         foo:
           type: string
           readOnly: true
-    body:
+    pet_petId_body:
       properties:
         name:
           type: string
@@ -1818,7 +1869,7 @@ components:
         status:
           type: string
           description: Updated status of the pet
-    body_1:
+    petId_uploadImage_body:
       properties:
         additionalMetadata:
           type: string
@@ -1827,7 +1878,7 @@ components:
           type: string
           description: file to upload
           format: binary
-    body_2:
+    fake_body:
       required:
       - byte
       - double
@@ -1866,11 +1917,11 @@ components:
           description: None
           format: double
         string:
-          pattern: /[a-z]/i
+          pattern: "/[a-z]/i"
           type: string
           description: None
         pattern_without_delimiter:
-          pattern: ^[A-Z].*
+          pattern: "^[A-Z].*"
           type: string
           description: None
         byte:
@@ -1898,7 +1949,7 @@ components:
         callback:
           type: string
           description: None
-    body_3:
+    fake_body_1:
       required:
       - byte
       - double
@@ -1937,11 +1988,11 @@ components:
           description: None
           format: double
         string:
-          pattern: /[a-z]/i
+          pattern: "/[a-z]/i"
           type: string
           description: None
         pattern_without_delimiter:
-          pattern: ^[A-Z].*
+          pattern: "^[A-Z].*"
           type: string
           description: None
         byte:
@@ -1969,25 +2020,25 @@ components:
         callback:
           type: string
           description: None
-    body_4:
+    enum_form_body:
       properties:
         enum_form_string_array:
           type: array
           description: Form parameter enum test (string array)
           items:
             type: string
+            default: $
             enum:
             - '>'
             - $
-            default: $
         enum_form_string:
           type: string
           description: Form parameter enum test (string)
+          default: -efg
           enum:
           - _abc
           - -efg
           - (xyz)
-          default: -efg
         enum_query_double:
           type: number
           description: Query parameter enum test (double)
@@ -1995,7 +2046,7 @@ components:
           enum:
           - 1.1
           - -1.2
-    body_5:
+    fake_jsonFormData_body:
       required:
       - param
       - param2
@@ -2006,7 +2057,7 @@ components:
         param2:
           type: string
           description: field2
-    body_6:
+    animal_animalId_body:
       properties:
         name:
           type: string
@@ -2014,7 +2065,7 @@ components:
         status:
           type: string
           description: Updated status of the animal
-    body_7:
+    dog_dogId_body:
       properties:
         name:
           type: string

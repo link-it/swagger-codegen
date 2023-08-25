@@ -10,10 +10,11 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * A tag for a pet
+ * Tag
  */
-@ApiModel(description = "A tag for a pet")
 @Validated
+
+
 public class Tag   {
   @JsonProperty("id")
   private Long id = null;
@@ -29,7 +30,7 @@ public class Tag   {
   /**
    * Get id
    * @return id
-  **/
+   **/
   @ApiModelProperty(value = "")
   
     public Long getId() {
@@ -48,7 +49,7 @@ public class Tag   {
   /**
    * Get name
    * @return name
-  **/
+   **/
   @ApiModelProperty(value = "")
   
     public String getName() {

@@ -4,10 +4,9 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.Category;
 import io.swagger.model.Tag;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
@@ -15,10 +14,11 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * A pet for sale in the pet store
+ * Pet
  */
-@ApiModel(description = "A pet for sale in the pet store")
 @Validated
+
+
 public class Pet   {
   @JsonProperty("id")
   private Long id = null;
@@ -80,8 +80,8 @@ public class Pet   {
   /**
    * Get id
    * @return id
-  **/
-  @ApiModelProperty(value = "")
+   **/
+  @Schema(description = "")
   
     public Long getId() {
     return id;
@@ -99,8 +99,8 @@ public class Pet   {
   /**
    * Get category
    * @return category
-  **/
-  @ApiModelProperty(value = "")
+   **/
+  @Schema(description = "")
   
     @Valid
     public Category getCategory() {
@@ -119,8 +119,8 @@ public class Pet   {
   /**
    * Get name
    * @return name
-  **/
-  @ApiModelProperty(example = "doggie", required = true, value = "")
+   **/
+  @Schema(example = "doggie", required = true, description = "")
       @NotNull
 
     public String getName() {
@@ -144,8 +144,8 @@ public class Pet   {
   /**
    * Get photoUrls
    * @return photoUrls
-  **/
-  @ApiModelProperty(required = true, value = "")
+   **/
+  @Schema(required = true, description = "")
       @NotNull
 
     public List<String> getPhotoUrls() {
@@ -172,8 +172,8 @@ public class Pet   {
   /**
    * Get tags
    * @return tags
-  **/
-  @ApiModelProperty(value = "")
+   **/
+  @Schema(description = "")
       @Valid
     public List<Tag> getTags() {
     return tags;
@@ -191,8 +191,8 @@ public class Pet   {
   /**
    * pet status in the store
    * @return status
-  **/
-  @ApiModelProperty(value = "pet status in the store")
+   **/
+  @Schema(description = "pet status in the store")
   
     public StatusEnum getStatus() {
     return status;

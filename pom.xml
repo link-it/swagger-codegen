@@ -7,11 +7,13 @@
     <description>swagger-codegen-project</description>
     <version>3.0.69-gov4j-1</version>
     <url>https://github.com/swagger-api/swagger-codegen</url>
+    <!-- packaging su maven interno 
     <scm>
         <connection>scm:git:git@github.com:swagger-api/swagger-codegen.git</connection>
         <developerConnection>scm:git:git@github.com:swagger-api/swagger-codegen.git</developerConnection>
         <url>https://github.com/swagger-api/swagger-codegen</url>
     </scm>
+    -->
 
         <!-- packaging su maven interno -->
 	<distributionManagement>
@@ -245,6 +247,7 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- packaging su maven interno
             <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
@@ -257,6 +260,7 @@
                     <waitMaxTime>3600</waitMaxTime>
                 </configuration>
             </plugin>
+	    -->
         </plugins>
         <pluginManagement>
             <plugins>
@@ -270,18 +274,18 @@
                     <artifactId>maven-war-plugin</artifactId>
                     <version>3.3.2</version>
                 </plugin>
+                <!-- packaging su maven interno 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-gpg-plugin</artifactId>
                     <version>3.2.7</version>
                     <configuration>
-                        <!-- Prevent `gpg` from using pinentry programs -->
                         <gpgArguments>
-                            <arg>--pinentry-mode</arg>
                             <arg>loopback</arg>
                         </gpgArguments>
                     </configuration>
                 </plugin>
+		-->
             </plugins>
         </pluginManagement>
     </build>
